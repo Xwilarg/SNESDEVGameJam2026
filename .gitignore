@@ -11,6 +11,8 @@
 *.ilk
 *.map
 *.exp
+linkfile
+hdr.asm
 
 # Precompiled Headers
 *.gch
@@ -35,16 +37,20 @@
 *.i*86
 *.x86_64
 *.hex
+*.sfc
 
 # Debug files
 *.dSYM/
 *.su
 *.idb
 *.pdb
+*.sym
+*.symfull
 
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+*.log
 .tmp_versions/
 modules.order
 Module.symvers
