@@ -3,17 +3,18 @@ $(error "Please create an environment variable PVSNESLIB_HOME by following this 
 endif
 
 # ROMNAME and variables are used in snes_rules file
-export ROMNAME := hello_world
+export ROMNAME := ./out/hello_world
 export ROMTITLE := LIBSNES HELLO WORLD
 
 include ${PVSNESLIB_HOME}/devkitsnes/snes_rules
 
 #---------------------------------------------------------------------------------
 # Force the build to go through a wrapper. Instead of running 'make' directly, we define a custom rule
-.PHONY: all cleanLogs
+.PHONY: bitmaps all cleanLogs
 
-all: buildWithSummary
+all: bitmaps buildWithSummary
 buildActual: $(OBJS) $(ROMNAME).sfc
 	
 clean: cleanBuildRes cleanRom cleanGfx cleanLogs
 
+bitmaps : assets/map_512_512.pic

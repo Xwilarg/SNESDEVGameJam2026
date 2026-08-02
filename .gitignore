@@ -1,3 +1,6 @@
+/assets/*
+!/assets/*.bmp
+
 # Prerequisites
 *.d
 
