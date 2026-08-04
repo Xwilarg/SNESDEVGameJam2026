@@ -1,9 +1,6 @@
 #include <snes.h>
 
-extern char patterns, patterns_end;
-extern char palette;
-extern char map, map_end;
-
+#include "world.h"
 
 int main(void)
 {
@@ -13,11 +10,8 @@ int main(void)
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
     consoleInitDefaultText(0);
-    
-    // Copy tiles to VRAM
-    bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16 * 2, BG_16COLORS, 0x4000);
-    // Copy Map to VRAM
-    bgInitMapSet(1, &map, (&map_end - &map), SC_64x64, 0x1000);
+
+    World_Init();
 
     // Init background
     bgSetGfxPtr(0, 0x3000);
@@ -43,27 +37,32 @@ int main(void)
         switch (pad0)
         {
         case KEY_RIGHT:
-            scrX += 2;
+            scrX += 1;
             move = 1;
             break;
         case KEY_LEFT:
-            scrX -= 2;
+            scrX -= 1;
             move = 1;
             break;
         case KEY_DOWN:
-            scrY += 2;
+            scrY += 1;
             move = 1;
             break;
         case KEY_UP:
-            scrY -= 2;
+            scrY -= 1;
             move = 1;
             break;
         }
-        if (move)
-            bgSetScroll(1, scrX, scrY);
 
-        // Just inform user
-        consoleDrawText(0, 0, "SCR X=%d Y=%d", scrX, scrY);
+        if (scrX > 3) scrX = 0;
+        if (scrY > 3) scrY = 0;
+        if (scrX < 0) scrY = 2;
+        if (scrY < 0) scrY = 2;
+
+        if (move)
+            World_SetCamera(scrX, scrY);
+
+        consoleDrawText(0, 0, "X=%d Y=%d", scrX, scrY);
 
         WaitForVBlank();
     }
