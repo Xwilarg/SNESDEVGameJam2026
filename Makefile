@@ -10,11 +10,12 @@ include ${PVSNESLIB_HOME}/devkitsnes/snes_rules
 
 #---------------------------------------------------------------------------------
 # Force the build to go through a wrapper. Instead of running 'make' directly, we define a custom rule
-.PHONY: bitmaps all cleanLogs
+.PHONY: bitmaps all cleanLogs re
 
 all: bitmaps buildWithSummary
 buildActual: $(OBJS) $(ROMNAME).sfc
-	
+re: clean all
+
 clean: cleanBuildRes cleanRom cleanGfx cleanLogs
 
 bitmaps : assets/map_512_512.pic
