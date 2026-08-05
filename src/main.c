@@ -7,6 +7,19 @@
 
 #define SCROLL_SPEED 5
 
+u16 scrX = 256, scrY = 0;
+u16 targetX = 0, targetY = 0;
+
+u16 countrySelectionIndex = 0;
+
+inline void update_country_data(void)
+{
+    Country curr = countries[countrySelectionIndex];
+    targetX = curr.xPos;
+    targetY = curr.yPos;
+    consoleDrawText(4, 1, "%s", curr.name);
+}
+
 inline int lerp_toward(int x, int dest)
 {
     if (x < dest)
@@ -24,12 +37,7 @@ inline int lerp_toward(int x, int dest)
 
 int main(void)
 {
-    u16 scrX = 256, scrY = 0;
-    u16 targetX = 0, targetY = 0;
-
     u16 pad0, move;
-
-    u16 countrySelectionIndex = 0;
 
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
@@ -48,9 +56,7 @@ int main(void)
     // Wait for nothing :P
     setScreenOn();
 
-    Country curr = countries[countrySelectionIndex];
-    targetX = curr.xPos;
-    targetY = curr.yPos;
+    update_country_data();
 
     // Wait for nothing :P
     while (1)
@@ -76,19 +82,13 @@ int main(void)
         case KEY_DOWN:
             if (countrySelectionIndex == 0) countrySelectionIndex = COUNTRY_COUNT - 1;
             else --countrySelectionIndex;
-
-            curr = countries[countrySelectionIndex];
-            targetX = curr.xPos;
-            targetY = curr.yPos;
+            update_country_data();
             move = 1;
             break;
         case KEY_UP:
             if (countrySelectionIndex == COUNTRY_COUNT - 1) countrySelectionIndex = 0;
             else ++countrySelectionIndex;
-
-            curr = countries[countrySelectionIndex];
-            targetX = curr.xPos;
-            targetY = curr.yPos;
+            update_country_data();
             move = 1;
             break;
         }

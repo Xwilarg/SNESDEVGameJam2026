@@ -2,68 +2,57 @@
 
 Country countries[COUNTRY_COUNT] = {
     {
-        "Elanoe",
-        6,
+        "Elanoe              ",
         0,
         286
     },
     {
-        "Taureki",
-        7,
+        "Taureki             ",
         76,
         286
     },
     {
-        "Amareki",
-        7,
+        "Amareki             ",
         256,
         286
     },
     {
-        "Eno",
-        3,
+        "Eno                 ",
         0,
         184
     },
     {
-        "Bretna",
-        6,
+        "Bretna              ",
         198,
         188
     },
     {
-        "Strena",
-        6,
+        "Strena              ",
         256,
         226
     },
     {
-        "East Brina",
-        10,
+        "East Brina          ",
         256,
         50
     },
     {
-        "Republic of Brina",
-        17,
+        "Republic of Brina   ",
         186,
         36
     },
     {
-        "Larti",
-        5,
+        "Larti               ",
         34,
         30
     },
     {
-        "Boet",
-        4,
+        "Boet                ",
         0,
         90
     },
     {
-        "Seranegao",
-        9,
+        "Seranegao           ",
         0,
         0
     }
