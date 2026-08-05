@@ -3,27 +3,22 @@
 #include "world.h"
 #include "country.h"
 
-#define COUNTRY_COUNT 2
+#define DEBUG 1
 
-Country countries[COUNTRY_COUNT] = {
-    {
-        "Elanoe",
-        6,
-        0,
-        286
-    },
-    {
-        "Taureki",
-        7,
-        76,
-        286
-    }
-};
+#define SCROLL_SPEED 5
 
 int lerp_toward(int x, int dest)
 {
-    if (x < dest) return x + 1;
-    else if (x > dest) return x - 1;
+    if (x < dest)
+    {
+        if (x + SCROLL_SPEED > dest) return dest;
+        return x + SCROLL_SPEED;
+    }
+    if (x > dest)
+    {
+        if (x - SCROLL_SPEED < dest) return dest;
+        return x - SCROLL_SPEED;
+    }
     return x;
 }
 
@@ -101,7 +96,9 @@ int main(void)
         if (move)
             World_SetCamera(scrX, scrY);
 
-        consoleDrawText(0, 0, "X=%d Y=%d", scrX, scrY);
+#if DEBUG == 1
+        consoleDrawText(0, 0, "X=%d Y=%d    ", scrX, scrY);
+#endif
 
         WaitForVBlank();
     }
