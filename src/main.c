@@ -7,7 +7,7 @@
 
 #define SCROLL_SPEED 5
 
-int lerp_toward(int x, int dest)
+inline int lerp_toward(int x, int dest)
 {
     if (x < dest)
     {
