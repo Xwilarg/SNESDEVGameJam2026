@@ -3,11 +3,19 @@
 #include "world.h"
 #include "country.h"
 
-Country countries[1] = {
+#define COUNTRY_COUNT 2
+
+Country countries[COUNTRY_COUNT] = {
     {
         "Elanoe",
         6,
         0,
+        286
+    },
+    {
+        "Taureki",
+        7,
+        76,
         286
     }
 };
@@ -65,25 +73,27 @@ int main(void)
         }
 
         // Get current #0 pad
-        pad0 = padsCurrent(0);
+        pad0 = padsDown(0);
 
-        // Update scrolling with current pad
+        // Country selection
         switch (pad0)
         {
-        case KEY_RIGHT:
-            scrX += 1;
-            move = 1;
-            break;
-        case KEY_LEFT:
-            scrX -= 1;
-            move = 1;
-            break;
         case KEY_DOWN:
-            scrY += 1;
+            if (countrySelectionIndex == 0) countrySelectionIndex = COUNTRY_COUNT - 1;
+            else --countrySelectionIndex;
+
+            curr = countries[countrySelectionIndex];
+            targetX = curr.xPos;
+            targetY = curr.yPos;
             move = 1;
             break;
         case KEY_UP:
-            scrY -= 1;
+            if (countrySelectionIndex == COUNTRY_COUNT - 1) countrySelectionIndex = 0;
+            else ++countrySelectionIndex;
+
+            curr = countries[countrySelectionIndex];
+            targetX = curr.xPos;
+            targetY = curr.yPos;
             move = 1;
             break;
         }
