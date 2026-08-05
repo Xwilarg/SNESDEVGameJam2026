@@ -15,5 +15,5 @@ void World_Init(void)
 
 void World_SetCamera(u16 tileX, u16 tileY)
 {
-    bgSetScroll(1, tileX * 160, tileY * 160);
+    bgSetScroll(1, tileX, tileY);
 }

@@ -1,11 +1,32 @@
 #include <snes.h>
 
 #include "world.h"
+#include "country.h"
+
+Country countries[1] = {
+    {
+        "Elanoe",
+        6,
+        0,
+        286
+    }
+};
+
+int lerp_toward(int x, int dest)
+{
+    if (x < dest) return x + 1;
+    else if (x > dest) return x - 1;
+    return x;
+}
 
 int main(void)
 {
-    u16 scrX = 0, scrY = 0;
+    u16 scrX = 256, scrY = 0;
+    u16 targetX = 0, targetY = 0;
+
     u16 pad0, move;
+
+    u16 countrySelectionIndex = 0;
 
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
@@ -24,11 +45,24 @@ int main(void)
     // Wait for nothing :P
     setScreenOn();
 
+    Country curr = countries[countrySelectionIndex];
+    targetX = curr.xPos;
+    targetY = curr.yPos;
+
     // Wait for nothing :P
     while (1)
     {
         // no move currently
         move = 0;
+
+        if (scrX != targetX) {
+            scrX = lerp_toward(scrX, targetX);
+            move = 1;
+        }
+        if (scrY != targetY) {
+            scrY = lerp_toward(scrY, targetY);
+            move = 1;
+        }
 
         // Get current #0 pad
         pad0 = padsCurrent(0);
@@ -53,11 +87,6 @@ int main(void)
             move = 1;
             break;
         }
-
-        if (scrX > 3) scrX = 0;
-        if (scrY > 3) scrY = 0;
-        if (scrX < 0) scrY = 2;
-        if (scrY < 0) scrY = 2;
 
         if (move)
             World_SetCamera(scrX, scrY);
