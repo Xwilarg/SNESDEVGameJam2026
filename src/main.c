@@ -18,6 +18,21 @@ inline void update_country_data(void)
     targetX = curr.xPos;
     targetY = curr.yPos;
     consoleDrawText(4, 1, "%s", curr.name);
+
+    // HACK
+    int i;
+    for (i = 0; i < 4; i++)
+    {
+        consoleDrawText(0, i * 4, "                                   ");
+    }
+
+    i = 1;
+    Troop* troop;
+    for (troop = curr.troops; troop != NULL; troop = troop->next)
+    {
+        consoleDrawText(0, i * 4, "Troop %d Health %d Strength %d", i, troop->health, troop->strength);
+        i++;
+    }
 }
 
 inline int lerp_toward(int x, int dest)
@@ -55,6 +70,13 @@ int main(void)
 
     // Wait for nothing :P
     setScreenOn();
+
+#if DEBUG == 1
+    Country_NewTroop(&countries[0]);
+    Country_NewTroop(&countries[0]);
+
+    Country_NewTroop(&countries[1]);
+#endif
 
     update_country_data();
 
