@@ -2,76 +2,111 @@
 
 Country countries[COUNTRY_COUNT] = {
     {
-        "Elanoe              ",
+        "Elanoe",
+
+        // X,Y
         0,
         286,
-        NULL
+
+        NULL, // Troops
+        3, // Population
+        MY_TEAM // Team
     },
     {
-        "Taureki             ",
+        "Taureki",
         76,
         286,
-        NULL
+
+        NULL, // Troops
+        4, // Population
+        1 // Team
     },
     {
-        "Amareki             ",
+        "Amareki",
         256,
         286,
-        NULL
+
+        NULL, // Troops
+        4, // Population
+        2 // Team
     },
     {
-        "Eno                 ",
+        "Eno",
         0,
         184,
-        NULL
+
+        NULL, // Troops
+        4, // Population
+        3 // Team
     },
     {
-        "Bretna              ",
+        "Bretna",
         198,
         188,
-        NULL
+
+        NULL, // Troops
+        2, // Population
+        4 // Team
     },
     {
-        "Strena              ",
+        "Strena",
         256,
         226,
-        NULL
+
+        NULL, // Troops
+        2, // Population
+        5 // Team
     },
     {
-        "East Brina          ",
+        "East Brina",
         256,
         50,
-        NULL
+
+        NULL, // Troops
+        3, // Population
+        6 // Team
     },
     {
-        "Republic of Brina   ",
+        "Republic of Brina",
         186,
         36,
-        NULL
+
+        NULL, // Troops
+        3, // Population
+        7 // Team
     },
     {
-        "Larti               ",
+        "Larti",
         34,
         30,
-        NULL
+
+        NULL, // Troops
+        7, // Population
+        8 // Team
     },
     {
-        "Boet                ",
+        "Boet",
         0,
         90,
-        NULL
+
+        NULL, // Troops
+        1, // Population
+        9 // Team
     },
     {
-        "Seranegao           ",
+        "Seranegao",
         0,
         0,
-        NULL
+
+        NULL, // Troops
+        3, // Population
+        10 // Team
     }
 };
 
-Troop* Country_NewTroop(Country* country)
+Troop* Country_NewTroop(Country* country, TroopType troopType)
 {
-    Troop* troop = Troop_New();
+    Troop* troop = Troop_New(troopType);
 
     if (country->troops != NULL)
     {

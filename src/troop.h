@@ -20,5 +20,5 @@ typedef struct Troop
     TroopType type;
 } Troop;
 
-Troop* Troop_New(TroopType type);
-bool have_any_allies(Troop* list);
+Troop* Troop_New(TroopType type, int team);
+bool HaveAnyAllies(Troop* list);

@@ -59,16 +59,17 @@ void LerpTowardsCountry(u16 index)
     Country* country = &countries[index];
     LerpTowards(country->xPos, country->yPos);
 
-    consoleDrawText(0, 0, "%s", country->name);
+    consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
     
     Menu_Draw(&menu);
 }
 
 char* OnMenuLabel(u16 index)
 {
-    bool haveAnyTroops = have_any_allies(countries[index].troops);
+    Country* country = &countries[index];
+    bool haveAnyTroops = HaveAnyAllies(country->troops);
 
-    if (index == 0) return "New Troop";
+    if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
     if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
     if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
     return NULL;

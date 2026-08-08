@@ -2,18 +2,19 @@
 
 #include <stdlib.h>
 
-Troop* Troop_New(TroopType type)
+Troop* Troop_New(TroopType type, int team)
 {
     Troop* troop = (Troop*)malloc(sizeof(Troop));
 
     troop->next = NULL;
     troop->size = 1;
     troop->type = type;
+    troop->team = team;
 
     return troop;
 }
 
-bool have_any_allies(Troop* list)
+bool HaveAnyAllies(Troop* list)
 {
     Troop* it = list;
     while (it != NULL)
