@@ -50,3 +50,10 @@ bool HaveAnyUpgradableAllies(Troop* list)
 
     return false;
 }
+
+char* TroopTypeToString(TroopType type)
+{
+    if (type == BOWMAN) return "Bowman";
+    if (type == SWORDMAN) return "Swordman";
+    if (type == SPEARMAN) return "Spearman";
+}

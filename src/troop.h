@@ -24,3 +24,4 @@ Troop* Troop_New(TroopType type, int team);
 bool HaveAnyAllies(Troop* list);
 bool HaveAnyUpgradableAllies(Troop* list);
 bool CanBeUpgrade(Troop* t);
+char* TroopTypeToString(TroopType type);

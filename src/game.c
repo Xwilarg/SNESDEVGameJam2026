@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <snes.h>
+#include <stdio.h>
 
 #include "world.h"
 #include "country.h"
@@ -21,6 +22,8 @@ u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
+
+char buffer[30];
 
 Menu menu = {
     0,
@@ -135,9 +138,9 @@ char* OnMenuLabel(u16 index)
         }
         else if (menuIndex == MENU_CREATE_TROOP)
         {
-            if (index == 0) return "Bowman";
-            if (index == 1) return "Swordman";
-            if (index == 2) return "Spearman";
+            if (index == 0) return TroopTypeToString(BOWMAN);
+            if (index == 1) return TroopTypeToString(SWORDMAN);
+            if (index == 2) return TroopTypeToString(SPEARMAN);
             if (index == 3) return "Go back";
         }
         else if (menuIndex == MENU_UPGRADE_TROOP)
@@ -145,15 +148,18 @@ char* OnMenuLabel(u16 index)
             Troop* it = countries->troops;
 
             int i = 0;
-            while (i < index)
+            while (it != NULL)
             {
                 if (it->team == MY_TEAM && CanBeUpgrade(it))
                 {
-                    if (i == index) return "TROOP";
+                    if (i == index)
+                    {
+                        memset(buffer, ' ', 30);
+                        snprintf(buffer, 30, "%s (%d)", TroopTypeToString(it->type), it->level);
+                        return buffer;
+                    }
                     it = it->next;
                 }
-
-                if (it == NULL) break;
             }
             return "Back";
         }
