@@ -65,9 +65,9 @@ void LerpTowardsCountry(u16 index)
 
 char* OnMenuLabel(u16 index)
 {
-    if (index == 0) return "Train";
-    if (index == 1) return "Attack";
-    if (index == 2) return "Cook";
+    if (index == 0) return "New Troop";
+    if (index == 1) return "Train Troop";
+    if (index == 2) return "Move Troop";
     return NULL;
 }
 
