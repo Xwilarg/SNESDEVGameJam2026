@@ -51,6 +51,11 @@ s16 Wrap(s16 x, s16 min, s16 max)
     return x;
 }
 
+void UpdateCountryLabel(Country* country)
+{
+    consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
+}
+
 void LerpTowards(u16 targetX, u16 targetY)
 {
     while (targetX != worldX || targetY != worldY)
@@ -65,7 +70,7 @@ void LerpTowardsCountry(u16 index)
     Country* country = &countries[index];
     LerpTowards(country->xPos, country->yPos);
 
-    consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
+    UpdateCountryLabel(country);
     
     Menu_Draw(&menu);
 }
@@ -140,6 +145,33 @@ bool OnMenuSelect(u16 index)
     }
     else if (menuIndex == MENU_CREATE_TROOP)
     {
+        if (index != 3)
+        {
+            TroopType type;
+            if (index == 0) type = BOWMAN;
+            else if (index == 1) type = SWORDMAN;
+            else if (index == 2) type = SPEARMAN;
+
+            Troop* new = Troop_New(type, MY_TEAM);
+
+            Troop* it = country->troops;
+            if (it == NULL)
+            {
+                country->troops = new;
+            }
+            else
+            {
+                while (it->next != NULL)
+                {
+                    it = it->next;
+                }
+                it->next = new;
+            }
+
+            --country->population;
+            UpdateCountryLabel(country);
+        }
+
         menuIndex = MENU_UNASSIGNED;
     }
 
