@@ -7,10 +7,10 @@ s16 Wrap(s16 x, s16 min, s16 max);
 void Menu_Draw(Menu* menu)
 {
     u16 i;
-    consoleDrawText(0, 4, "%s", menu->title);
+    consoleDrawText(0, 4, "%s                    ", menu->getTitle());
     for (i = 0; i < menu->numItems; i++)
     {
-        consoleDrawText(0, 5 + 2 * (i + 1), "%s%s", menu->index == i ? "x" : " ", menu->getLabel(i));
+        consoleDrawText(0, 5 + 2 * (i + 1), "%s%s                    ", menu->index == i ? "x" : " ", menu->getLabel(i));
     }
 }
 

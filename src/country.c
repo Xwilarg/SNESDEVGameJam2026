@@ -104,9 +104,9 @@ Country countries[COUNTRY_COUNT] = {
     }
 };
 
-Troop* Country_NewTroop(Country* country, TroopType troopType)
+Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
 {
-    Troop* troop = Troop_New(troopType);
+    Troop* troop = Troop_New(troopType, team);
 
     if (country->troops != NULL)
     {

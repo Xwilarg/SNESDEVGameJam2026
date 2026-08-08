@@ -12,13 +12,14 @@ u16 pad0;
 
 s16 countryIndex = 0;
 
+char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 void OnMenuSelect(u16 index);
 
 Menu menu = {
     0,
     3,
-    "Troop Management",
+    &OnMenuTitle,
     &OnMenuLabel,
     &OnMenuSelect
 };
@@ -64,14 +65,28 @@ void LerpTowardsCountry(u16 index)
     Menu_Draw(&menu);
 }
 
+char* OnMenuTitle()
+{
+    Country* country = &countries[countryIndex];
+
+    return country->team == MY_TEAM ? "Troop Management" : "Diplomacy Options";
+}
+
 char* OnMenuLabel(u16 index)
 {
-    Country* country = &countries[index];
-    bool haveAnyTroops = HaveAnyAllies(country->troops);
+    Country* country = &countries[countryIndex];
 
-    if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
-    if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
-    if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
+    if (country->team == MY_TEAM)
+    {
+        bool haveAnyTroops = HaveAnyAllies(country->troops);
+
+        if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
+        if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
+        if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
+        return NULL;
+    }
+
+    if (index == 0) return "Make alliance";
     return NULL;
 }
 

@@ -20,4 +20,4 @@ typedef struct
 
 extern Country countries[COUNTRY_COUNT];
 
-Troop* Country_NewTroop(Country* country, TroopType troopType);
+Troop* Country_NewTroop(Country* country, TroopType troopType, int team);
