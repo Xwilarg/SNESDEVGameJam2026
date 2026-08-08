@@ -4,12 +4,23 @@
 
 #include "world.h"
 #include "country.h"
+#include "menu.h"
 
 #define SCROLL_SPEED 5
 
 u16 pad0;
 
 s16 countryIndex = 0;
+
+char* OnMenuLabel(u16 index);
+void OnMenuSelect(u16 index);
+
+Menu menu = {
+    0,
+    3,
+    &OnMenuLabel,
+    &OnMenuSelect
+};
 
 s16 Lerp(s16 x, s16 dest)
 {
@@ -48,6 +59,21 @@ void LerpTowardsCountry(u16 index)
     LerpTowards(country->xPos, country->yPos);
 
     consoleDrawText(0, 0, "%s", country->name);
+    
+    Menu_Draw(&menu);
+}
+
+char* OnMenuLabel(u16 index)
+{
+    if (index == 0) return "Train";
+    if (index == 1) return "Attack";
+    if (index == 2) return "Cook";
+    return NULL;
+}
+
+void OnMenuSelect(u16 index)
+{
+    consoleDrawText(0, 0, "%d  ", index);
 }
 
 void Game_Update()
@@ -63,6 +89,12 @@ void Game_Update()
     case KEY_RIGHT:
         countryIndex = Wrap(countryIndex + 1, 0, COUNTRY_COUNT - 1);
         LerpTowardsCountry(countryIndex);
+        break;
+
+    case KEY_UP:
+    case KEY_DOWN:
+    case KEY_X:
+        Menu_Input(&menu, pad0);
         break;
     }
 
