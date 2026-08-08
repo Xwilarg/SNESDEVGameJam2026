@@ -66,9 +66,11 @@ void LerpTowardsCountry(u16 index)
 
 char* OnMenuLabel(u16 index)
 {
+    bool haveAnyTroops = have_any_allies(countries[index].troops);
+
     if (index == 0) return "New Troop";
-    if (index == 1) return "Train Troop";
-    if (index == 2) return "Move Troop";
+    if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
+    if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
     return NULL;
 }
 

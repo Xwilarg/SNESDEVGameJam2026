@@ -12,3 +12,18 @@ Troop* Troop_New(TroopType type)
 
     return troop;
 }
+
+bool have_any_allies(Troop* list)
+{
+    Troop* it = list;
+    while (it != NULL)
+    {
+        if (it->team == MY_TEAM)
+        {
+            return true;
+        }
+        it = it->next;
+    }
+
+    return false;
+}
