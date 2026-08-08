@@ -4,6 +4,8 @@ extern char patterns, patterns_end;
 extern char palette;
 extern char map, map_end;
 
+u16 worldX = 0, worldY = 0;
+
 void World_Init(void)
 {
     // Copy tiles to VRAM
@@ -13,7 +15,10 @@ void World_Init(void)
     bgInitMapSet(1, &map, (&map_end - &map), SC_64x64, 0x1000);
 }
 
-void World_SetCamera(u16 tileX, u16 tileY)
+void World_SetCamera(u16 x, u16 y)
 {
-    bgSetScroll(1, tileX, tileY);
+    worldX = x;
+    worldY = y;
+
+    bgSetScroll(1, x, y);
 }

@@ -1,59 +1,11 @@
 #include <snes.h>
 
+#include "game.h"
 #include "world.h"
 #include "country.h"
 
-#define DEBUG 1
-
-#define SCROLL_SPEED 5
-
-u16 scrX = 256, scrY = 0;
-u16 targetX = 0, targetY = 0;
-
-u16 countrySelectionIndex = 0;
-
-inline void update_country_data(void)
-{
-    Country curr = countries[countrySelectionIndex];
-    targetX = curr.xPos;
-    targetY = curr.yPos;
-    consoleDrawText(4, 1, "%s", curr.name);
-
-    // HACK
-    int i;
-    for (i = 0; i < 4; i++)
-    {
-        consoleDrawText(0, i * 4, "                                   ");
-    }
-
-    i = 1;
-    Troop* troop;
-    for (troop = curr.troops; troop != NULL; troop = troop->next)
-    {
-        consoleDrawText(0, i * 4, "Troop %d Health %d Strength %d", i, troop->health, troop->strength);
-        i++;
-    }
-}
-
-inline int lerp_toward(int x, int dest)
-{
-    if (x < dest)
-    {
-        if (x + SCROLL_SPEED > dest) return dest;
-        return x + SCROLL_SPEED;
-    }
-    if (x > dest)
-    {
-        if (x - SCROLL_SPEED < dest) return dest;
-        return x - SCROLL_SPEED;
-    }
-    return x;
-}
-
 int main(void)
 {
-    u16 pad0, move;
-
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
     consoleInitDefaultText(0);
@@ -71,58 +23,10 @@ int main(void)
     // Wait for nothing :P
     setScreenOn();
 
-#if DEBUG == 1
-    Country_NewTroop(&countries[0]);
-    Country_NewTroop(&countries[0]);
-
-    Country_NewTroop(&countries[1]);
-#endif
-
-    update_country_data();
-
-    // Wait for nothing :P
     while (1)
     {
-        // no move currently
-        move = 0;
-
-        if (scrX != targetX) {
-            scrX = lerp_toward(scrX, targetX);
-            move = 1;
-        }
-        if (scrY != targetY) {
-            scrY = lerp_toward(scrY, targetY);
-            move = 1;
-        }
-
-        // Get current #0 pad
-        pad0 = padsDown(0);
-
-        // Country selection
-        switch (pad0)
-        {
-        case KEY_DOWN:
-            if (countrySelectionIndex == 0) countrySelectionIndex = COUNTRY_COUNT - 1;
-            else --countrySelectionIndex;
-            update_country_data();
-            move = 1;
-            break;
-        case KEY_UP:
-            if (countrySelectionIndex == COUNTRY_COUNT - 1) countrySelectionIndex = 0;
-            else ++countrySelectionIndex;
-            update_country_data();
-            move = 1;
-            break;
-        }
-
-        if (move)
-            World_SetCamera(scrX, scrY);
-
-#if DEBUG == 1
-        consoleDrawText(0, 0, "X=%d Y=%d    ", scrX, scrY);
-#endif
-
-        WaitForVBlank();
+        Game_Update();
     }
+
     return 0;
 }
