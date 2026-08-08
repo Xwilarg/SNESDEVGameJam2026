@@ -18,6 +18,7 @@ void OnMenuSelect(u16 index);
 Menu menu = {
     0,
     3,
+    "Troop Management",
     &OnMenuLabel,
     &OnMenuSelect
 };
