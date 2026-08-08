@@ -8,17 +8,21 @@
 
 #define SCROLL_SPEED 5
 
+#define MENU_UNASSIGNED 0
+
 u16 pad0;
 
 s16 countryIndex = 0;
+u16 menuIndex = 0;
 
+u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 void OnMenuSelect(u16 index);
 
 Menu menu = {
     0,
-    3,
+    &GetMenuItemCount,
     &OnMenuTitle,
     &OnMenuLabel,
     &OnMenuSelect
@@ -65,6 +69,13 @@ void LerpTowardsCountry(u16 index)
     Menu_Draw(&menu);
 }
 
+u16 GetMenuItemCount()
+{
+    Country* country = &countries[countryIndex];
+
+    return country->team == MY_TEAM ? 3 : 1;
+}
+
 char* OnMenuTitle()
 {
     Country* country = &countries[countryIndex];
@@ -108,10 +119,12 @@ void Game_Update(void)
     {
     case KEY_LEFT:
         countryIndex = Wrap(countryIndex - 1, 0, COUNTRY_COUNT - 1);
+        menuIndex = MENU_UNASSIGNED;
         LerpTowardsCountry(countryIndex);
         break;
     case KEY_RIGHT:
         countryIndex = Wrap(countryIndex + 1, 0, COUNTRY_COUNT - 1);
+        menuIndex = MENU_UNASSIGNED;
         LerpTowardsCountry(countryIndex);
         break;
 

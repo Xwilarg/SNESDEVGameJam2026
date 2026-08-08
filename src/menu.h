@@ -5,7 +5,7 @@
 typedef struct Menu
 {
     s16 index;
-    s16 numItems;
+    u16 (*getNumItems)(void);
 
     char* (*getTitle)(void);
     char* (*getLabel)(u16 index);
