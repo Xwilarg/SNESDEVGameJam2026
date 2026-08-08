@@ -9,6 +9,7 @@
 #define SCROLL_SPEED 5
 
 #define MENU_UNASSIGNED 0
+#define MENU_CREATE_TROOP 1
 
 u16 pad0;
 
@@ -18,7 +19,7 @@ u16 menuIndex = 0;
 u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
-void OnMenuSelect(u16 index);
+bool OnMenuSelect(u16 index);
 
 Menu menu = {
     0,
@@ -73,14 +74,28 @@ u16 GetMenuItemCount()
 {
     Country* country = &countries[countryIndex];
 
-    return country->team == MY_TEAM ? 3 : 1;
+    if (country->team == MY_TEAM)
+    {
+        if (menuIndex == MENU_UNASSIGNED) return 3;
+        if (menuIndex == MENU_CREATE_TROOP) return 4;
+        return 0;
+    }
+    return 1;
 }
 
 char* OnMenuTitle()
 {
     Country* country = &countries[countryIndex];
 
-    return country->team == MY_TEAM ? "Troop Management" : "Diplomacy Options";
+    if (country->team == MY_TEAM)
+    {
+        if (menuIndex == MENU_UNASSIGNED) return "Troop Management";
+        if (menuIndex == MENU_CREATE_TROOP) return "New troop";
+
+        return "UNKNOWN";
+    }
+
+    return "Diplomacy Options";
 }
 
 char* OnMenuLabel(u16 index)
@@ -89,11 +104,21 @@ char* OnMenuLabel(u16 index)
 
     if (country->team == MY_TEAM)
     {
-        bool haveAnyTroops = HaveAnyAllies(country->troops);
+        if (menuIndex == MENU_UNASSIGNED)
+        {
+            bool haveAnyTroops = HaveAnyAllies(country->troops);
 
-        if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
-        if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
-        if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
+            if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
+            if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
+            if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
+        }
+        else if (menuIndex == MENU_CREATE_TROOP)
+        {
+            if (index == 0) return "Bowman";
+            if (index == 1) return "Swordman";
+            if (index == 2) return "Spearman";
+            if (index == 3) return "Go back";
+        }
         return NULL;
     }
 
@@ -101,9 +126,24 @@ char* OnMenuLabel(u16 index)
     return NULL;
 }
 
-void OnMenuSelect(u16 index)
+bool OnMenuSelect(u16 index)
 {
-    consoleDrawText(0, 0, "%d  ", index);
+    Country* country = &countries[countryIndex];
+
+    if (menuIndex == MENU_UNASSIGNED)
+    {
+        if (index == 0) // Create troop
+        {
+            if (country->population == 0) return false;
+            menuIndex = MENU_CREATE_TROOP;
+        }
+    }
+    else if (menuIndex == MENU_CREATE_TROOP)
+    {
+        menuIndex = MENU_UNASSIGNED;
+    }
+
+    return true;
 }
 
 void Game_Init(void)

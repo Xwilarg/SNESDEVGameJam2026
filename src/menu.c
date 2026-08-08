@@ -33,7 +33,11 @@ void Menu_Input(Menu* menu, u16 pad0)
         Menu_Draw(menu);
         break;
     case KEY_X:
-        menu->select(menu->index);
+        if (menu->select(menu->index))
+        {
+            menu->index = 0;
+            Menu_Draw(menu);
+        }
         break;
     }
 }

@@ -9,7 +9,7 @@ typedef struct Menu
 
     char* (*getTitle)(void);
     char* (*getLabel)(u16 index);
-    void (*select)(u16 index);
+    bool (*select)(u16 index);
 } Menu;
 
 void Menu_Draw(Menu* menu);
