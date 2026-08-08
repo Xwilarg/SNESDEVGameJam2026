@@ -23,6 +23,8 @@ int main(void)
     // Wait for nothing :P
     setScreenOn();
 
+    Game_Init();
+
     while (1)
     {
         Game_Update();

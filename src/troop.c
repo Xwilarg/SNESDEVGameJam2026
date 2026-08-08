@@ -2,13 +2,13 @@
 
 #include <stdlib.h>
 
-Troop* Troop_New(void)
+Troop* Troop_New(TroopType type)
 {
     Troop* troop = (Troop*)malloc(sizeof(Troop));
 
     troop->next = NULL;
-    troop->health = 0;
-    troop->strength = 0;
+    troop->size = 1;
+    troop->type = type;
 
     return troop;
 }

@@ -76,7 +76,12 @@ void OnMenuSelect(u16 index)
     consoleDrawText(0, 0, "%d  ", index);
 }
 
-void Game_Update()
+void Game_Init(void)
+{
+    LerpTowardsCountry(countryIndex);
+}
+
+void Game_Update(void)
 {
     pad0 = padsDown(0);
 
