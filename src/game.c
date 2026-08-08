@@ -10,6 +10,7 @@
 
 #define MENU_UNASSIGNED 0
 #define MENU_CREATE_TROOP 1
+#define MENU_UPGRADE_TROOP 2
 
 u16 pad0;
 
@@ -83,6 +84,21 @@ u16 GetMenuItemCount()
     {
         if (menuIndex == MENU_UNASSIGNED) return 3;
         if (menuIndex == MENU_CREATE_TROOP) return 4;
+        if (menuIndex == MENU_UPGRADE_TROOP) 
+        {
+            Troop* it = countries->troops;
+
+            int i = 0;
+            while (it != NULL)
+            {
+                if (it->team == MY_TEAM && CanBeUpgrade(it))
+                {
+                    i++;
+                }
+                it = it->next;
+            }
+            return i + 1;
+        }
         return 0;
     }
     return 1;
@@ -96,6 +112,7 @@ char* OnMenuTitle()
     {
         if (menuIndex == MENU_UNASSIGNED) return "Troop Management";
         if (menuIndex == MENU_CREATE_TROOP) return "New troop";
+        if (menuIndex == MENU_UPGRADE_TROOP) return "Train troop";
 
         return "UNKNOWN";
     }
@@ -111,11 +128,10 @@ char* OnMenuLabel(u16 index)
     {
         if (menuIndex == MENU_UNASSIGNED)
         {
-            bool haveAnyTroops = HaveAnyAllies(country->troops);
 
             if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
-            if (index == 1) return haveAnyTroops ? "Train Troop" : "No troop to train";
-            if (index == 2) return haveAnyTroops ? "Move Troop" : "No troop to move";
+            if (index == 1) return HaveAnyUpgradableAllies(countries->troops) ? "Train Troop" : "No troop to train";
+            if (index == 2) return HaveAnyAllies(country->troops) ? "Move Troop" : "No troop to move";
         }
         else if (menuIndex == MENU_CREATE_TROOP)
         {
@@ -123,6 +139,23 @@ char* OnMenuLabel(u16 index)
             if (index == 1) return "Swordman";
             if (index == 2) return "Spearman";
             if (index == 3) return "Go back";
+        }
+        else if (menuIndex == MENU_UPGRADE_TROOP)
+        {
+            Troop* it = countries->troops;
+
+            int i = 0;
+            while (i < index)
+            {
+                if (it->team == MY_TEAM && CanBeUpgrade(it))
+                {
+                    if (i == index) return "TROOP";
+                    it = it->next;
+                }
+
+                if (it == NULL) break;
+            }
+            return "Back";
         }
         return NULL;
     }
@@ -141,6 +174,14 @@ bool OnMenuSelect(u16 index)
         {
             if (country->population == 0) return false;
             menuIndex = MENU_CREATE_TROOP;
+        }
+        else if (index == 1) // Upgrade troop
+        {
+            bool haveAnyTroops = HaveAnyUpgradableAllies(country->troops);
+            if (!haveAnyTroops) return false;
+
+            menuIndex = MENU_UPGRADE_TROOP;
+
         }
     }
     else if (menuIndex == MENU_CREATE_TROOP)
@@ -161,6 +202,7 @@ bool OnMenuSelect(u16 index)
             }
             else
             {
+                Troop* next = it->next;
                 while (it->next != NULL)
                 {
                     it = it->next;
