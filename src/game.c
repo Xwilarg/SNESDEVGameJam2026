@@ -1,7 +1,7 @@
 #include "game.h"
 
 #include <snes.h>
-#include <stdio.h>
+#include <string.h>
 
 #include "world.h"
 #include "country.h"
@@ -23,7 +23,7 @@ char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
 
-char buffer[30];
+char* buffer;
 
 Menu menu = {
     0,
@@ -154,12 +154,19 @@ char* OnMenuLabel(u16 index)
                 {
                     if (i == index)
                     {
-                        memset(buffer, ' ', 30);
+                        int y = 0;
+                        while (y < 30)
+                        {
+                            buffer[y] = 0;
+                            ++y;
+                        }
+                        // memset(buffer, 0, 30);
+                        //strcpy(&buffer[y], TroopTypeToString(it->type));
                         snprintf(buffer, 30, "%s (%d)", TroopTypeToString(it->type), it->level);
                         return buffer;
                     }
-                    it = it->next;
                 }
+                it = it->next;
             }
             return "Back";
         }
@@ -229,6 +236,7 @@ bool OnMenuSelect(u16 index)
 void Game_Init(void)
 {
     LerpTowardsCountry(countryIndex);
+    buffer = malloc(sizeof(char) * 30);
 }
 
 void Game_Update(void)

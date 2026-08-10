@@ -1,5 +1,4 @@
 #include "menu.h"
-
 #include <snes.h>
 
 s16 Wrap(s16 x, s16 min, s16 max);
@@ -13,6 +12,8 @@ void Menu_Draw(Menu* menu)
     for (i = 0; i < numItems; i++)
     {
         consoleDrawText(0, 5 + 2 * (i + 1), "%s%s                    ", menu->index == i ? "x" : " ", menu->getLabel(i));
+        // DEBUG
+        // consoleDrawText(0, 5 + 2 * (i + 1), "%p                    ", menu->getLabel(i));
     }
     for (i = numItems; i < 5; i++)
     {
