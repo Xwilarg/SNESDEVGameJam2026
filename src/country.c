@@ -10,7 +10,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         3, // Population
-        MY_TEAM // Team
+        MY_TEAM, // Team
+
+        (u16[]){ 1, 3, -1 }
     },
     {
         "Taureki",
@@ -19,7 +21,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         4, // Population
-        1 // Team
+        1, // Team
+
+        (u16[]){ 0, 2, 3, -1 }
     },
     {
         "Amareki",
@@ -28,7 +32,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         4, // Population
-        2 // Team
+        2, // Team
+
+        (u16[]){ 1, 5, -1 }
     },
     {
         "Eno",
@@ -37,7 +43,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         4, // Population
-        3 // Team
+        3, // Team
+
+        (u16[]){ 0, 1, 9, -1 }
     },
     {
         "Bretna",
@@ -46,7 +54,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         2, // Population
-        4 // Team
+        4, // Team
+
+        (u16[]){ 5, 6, -1 }
     },
     {
         "Strena",
@@ -55,7 +65,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         2, // Population
-        5 // Team
+        5, // Team
+
+        (u16[]){ 2, 4, -1 }
     },
     {
         "East Brina",
@@ -64,7 +76,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         3, // Population
-        6 // Team
+        6, // Team
+
+        (u16[]){ 4, 7, -1 }
     },
     {
         "Republic of Brina",
@@ -73,7 +87,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         3, // Population
-        7 // Team
+        7, // Team
+
+        (u16[]){ 6, 8, -1 }
     },
     {
         "Larti",
@@ -82,7 +98,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         7, // Population
-        8 // Team
+        8, // Team
+
+        (u16[]){ 7, 9, 10, -1 }
     },
     {
         "Boet",
@@ -91,7 +109,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         1, // Population
-        9 // Team
+        9, // Team
+
+        (u16[]){ 3, 8, -1 }
     },
     {
         "Seranegao",
@@ -100,7 +120,9 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
         3, // Population
-        10 // Team
+        10, // Team
+
+        (u16[]){ 8, -1 }
     }
 };
 
