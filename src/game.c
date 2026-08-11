@@ -225,6 +225,29 @@ bool OnMenuSelect(u16 index)
 
         menuIndex = MENU_UNASSIGNED;
     }
+    else if (menuIndex == MENU_UPGRADE_TROOP)
+    {
+        Troop* it = countries->troops;
+
+        int i = 0;
+        while (it != NULL)
+        {
+            if (it->team == MY_TEAM && CanBeUpgrade(it))
+            {
+                if (i == index)
+                {
+                    ++it->level;
+                    --country->population;
+                    UpdateCountryLabel(country);
+                    break;
+                }
+            }
+            it = it->next;
+            i++;
+        }
+
+        menuIndex = MENU_UNASSIGNED;
+    }
 
     return true;
 }
