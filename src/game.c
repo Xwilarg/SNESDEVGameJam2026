@@ -25,6 +25,8 @@ bool OnMenuSelect(u16 index);
 
 char buffer[30];
 
+u16 turn = 0;
+
 Menu menu = {
     0,
     &GetMenuItemCount,
@@ -58,6 +60,7 @@ s16 Wrap(s16 x, s16 min, s16 max)
 void UpdateCountryLabel(Country* country)
 {
     consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
+    consoleDrawText(22, 27, "Turn: %d   ", turn);
 }
 
 void LerpTowards(u16 targetX, u16 targetY)
