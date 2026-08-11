@@ -61,6 +61,9 @@ void UpdateCountryLabel(Country* country)
 {
     consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
     consoleDrawText(22, 27, "Turn: %d   ", turn);
+
+    // DEBUG
+    // consoleDrawText(0, 0, "%s (%d) (ID %d)               ", country->name, country->population, countryIndex);
 }
 
 void LerpTowards(u16 targetX, u16 targetY)

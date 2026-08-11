@@ -77,7 +77,7 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Larti",
-        34,
+        39,
         30,
 
         NULL, // Troops
@@ -86,7 +86,7 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Boet",
-        0,
+        5,
         90,
 
         NULL, // Troops
