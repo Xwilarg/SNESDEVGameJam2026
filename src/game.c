@@ -23,7 +23,7 @@ char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
 
-char* buffer;
+char buffer[30];
 
 Menu menu = {
     0,
@@ -154,19 +154,12 @@ char* OnMenuLabel(u16 index)
                 {
                     if (i == index)
                     {
-                        int y = 0;
-                        while (y < 30)
-                        {
-                            buffer[y] = 0;
-                            ++y;
-                        }
-                        // memset(buffer, 0, 30);
-                        //strcpy(&buffer[y], TroopTypeToString(it->type));
-                        snprintf(buffer, 30, "%s (%d)", TroopTypeToString(it->type), it->level);
+                        snprintf(buffer, sizeof(buffer), "%s (%d)", TroopTypeToString(it->type), it->level);
                         return buffer;
                     }
                 }
                 it = it->next;
+                i++;
             }
             return "Back";
         }
@@ -236,7 +229,6 @@ bool OnMenuSelect(u16 index)
 void Game_Init(void)
 {
     LerpTowardsCountry(countryIndex);
-    buffer = malloc(sizeof(char) * 30);
 }
 
 void Game_Update(void)

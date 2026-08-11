@@ -11,9 +11,8 @@ void Menu_Draw(Menu* menu)
     consoleDrawText(0, 4, "%s                    ", menu->getTitle());
     for (i = 0; i < numItems; i++)
     {
-        consoleDrawText(0, 5 + 2 * (i + 1), "%s%s                    ", menu->index == i ? "x" : " ", menu->getLabel(i));
-        // DEBUG
-        // consoleDrawText(0, 5 + 2 * (i + 1), "%p                    ", menu->getLabel(i));
+        char* label = menu->getLabel(i);
+        consoleDrawText(0, 5 + 2 * (i + 1), "%s%s                    ", menu->index == i ? "x" : " ", label);
     }
     for (i = numItems; i < 5; i++)
     {
