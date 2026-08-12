@@ -31,6 +31,7 @@ bool OnMenuSelect(u16 index);
 char buffer[30];
 
 u16 turn = 0;
+bool is_turn_started = false;
 
 Menu menu = {
     0,
@@ -96,7 +97,7 @@ u16 GetMenuItemCount()
 
     if (country->team == MY_TEAM)
     {
-        if (menuIndex == MENU_UNASSIGNED) return 3;
+        if (menuIndex == MENU_UNASSIGNED) return 4;
         if (menuIndex == MENU_CREATE_TROOP) return 4;
         if (menuIndex == MENU_UPGRADE_TROOP)
         {
@@ -177,6 +178,7 @@ char* OnMenuLabel(u16 index)
             if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
             if (index == 1) return HaveAnyUpgradableAllies(countries->troops) ? "Train Troop" : "No troop to train";
             if (index == 2) return HaveAnyAllies(country->troops) ? "Move Troop" : "No troop to move";
+            if (index == 3) return "Pass turn";
         }
         else if (menuIndex == MENU_CREATE_TROOP)
         {
@@ -280,6 +282,11 @@ bool OnMenuSelect(u16 index)
             menuIndex = MENU_MOVE_TROOP;
             moveDestination = -1;
         }
+        else if (index == 3) // Pass turn
+        {
+            ++turn;
+            UpdateCountryLabel(country);
+        }
     }
     else if (menuIndex == MENU_CREATE_TROOP)
     {
@@ -290,25 +297,12 @@ bool OnMenuSelect(u16 index)
             else if (index == 1) type = SWORDMAN;
             else if (index == 2) type = SPEARMAN;
 
-            Troop* new = Troop_New(type, MY_TEAM);
-
-            Troop* it = country->troops;
-            if (it == NULL)
-            {
-                country->troops = new;
-            }
-            else
-            {
-                Troop* next = it->next;
-                while (it->next != NULL)
-                {
-                    it = it->next;
-                }
-                it->next = new;
-            }
+            Country_NewTroop(country, type, MY_TEAM);
 
             --country->population;
             UpdateCountryLabel(country);
+
+            is_turn_started = true;
         }
 
         menuIndex = MENU_UNASSIGNED;
@@ -327,6 +321,7 @@ bool OnMenuSelect(u16 index)
                     ++it->level;
                     --country->population;
                     UpdateCountryLabel(country);
+                    is_turn_started = true;
                     break;
                 }
             }
@@ -378,6 +373,7 @@ bool OnMenuSelect(u16 index)
                         }
 
                         Country_AddExisting(dest, it);
+                        is_turn_started = true;
 
                         return true;
                     }
