@@ -100,11 +100,12 @@ u16 GetMenuItemCount()
     if (country->team == MY_TEAM)
     {
         if (menuIndex == MENU_UNASSIGNED) return 4;
-        if (menuIndex == MENU_CREATE_TROOP) return 4;
+        if (menuIndex == MENU_CREATE_TROOP) return 4; // Amount of troop types + back
         if (menuIndex == MENU_UPGRADE_TROOP)
         {
             Troop* it = country->troops;
 
+            // Number of choices is amount of troops that are ours and not level max
             int i = 0;
             while (it != NULL)
             {
@@ -120,8 +121,10 @@ u16 GetMenuItemCount()
         {
             if (moveDestination == -1)
             {
+                // Choose where to send the troop
                 u16* it = country->nearbyCountries;
 
+                // Amount of adjacent countries + back
                 int i = 0;
                 while (*it != -1)
                 {
@@ -134,6 +137,7 @@ u16 GetMenuItemCount()
             {
                 Troop* it = country->troops;
 
+                // Troops + back
                 int i = 0;
                 while (it != NULL)
                 {
@@ -160,7 +164,19 @@ char* OnMenuTitle()
         if (menuIndex == MENU_UNASSIGNED) return "Troop Management";
         if (menuIndex == MENU_CREATE_TROOP) return "New troop";
         if (menuIndex == MENU_UPGRADE_TROOP) return "Train troop";
-        if (menuIndex == MENU_MOVE_TROOP) return "Destination";
+        if (menuIndex == MENU_MOVE_TROOP)
+        {
+            if (moveDestination == -1)
+            {
+                return "Destination";
+            }
+            else
+            {
+                Country* c = &countries[moveDestination];
+                snprintf(buffer, 30, "Send troops to %s", c->name);
+                return buffer;
+            }
+        }
 
         return "UNKNOWN";
     }
@@ -190,7 +206,6 @@ char* OnMenuLabel(u16 index)
     {
         if (menuIndex == MENU_UNASSIGNED)
         {
-
             if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
             if (index == 1) return HaveAnyUpgradableAllies(countries->troops) ? "Train Troop" : "No troop to train";
             if (index == 2) return HaveAnyAllies(country->troops) ? "Move Troop" : "No troop to move";
@@ -380,6 +395,7 @@ bool OnMenuSelect(u16 index)
                     {
                         Country* dest = &countries[moveDestination];
 
+                        // Remove troop from current country...
                         if (lastIt == NULL)
                         {
                             country->troops = it->next;
@@ -389,6 +405,7 @@ bool OnMenuSelect(u16 index)
                             lastIt->next = it->next;
                         }
 
+                        // ...and add it to the destination one
                         Country_AddExisting(dest, it);
                         is_turn_started = true;
 
