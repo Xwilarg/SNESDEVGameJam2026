@@ -1,7 +1,8 @@
 #include "game.h"
 
 #include <snes.h>
-#include <string.h>
+
+#include <stdio.h> // snprintf
 
 #include "world.h"
 #include "country.h"
@@ -12,11 +13,15 @@
 #define MENU_UNASSIGNED 0
 #define MENU_CREATE_TROOP 1
 #define MENU_UPGRADE_TROOP 2
+#define MENU_MOVE_TROOP 3
 
 u16 pad0;
 
 s16 countryIndex = 0;
 u16 menuIndex = 0;
+
+// Moving troops
+s16 moveDestination = -1;
 
 u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
@@ -93,9 +98,9 @@ u16 GetMenuItemCount()
     {
         if (menuIndex == MENU_UNASSIGNED) return 3;
         if (menuIndex == MENU_CREATE_TROOP) return 4;
-        if (menuIndex == MENU_UPGRADE_TROOP) 
+        if (menuIndex == MENU_UPGRADE_TROOP)
         {
-            Troop* it = countries->troops;
+            Troop* it = country->troops;
 
             int i = 0;
             while (it != NULL)
@@ -107,6 +112,36 @@ u16 GetMenuItemCount()
                 it = it->next;
             }
             return i + 1;
+        }
+        else if (menuIndex == MENU_MOVE_TROOP)
+        {
+            if (moveDestination == -1)
+            {
+                u16* it = country->nearbyCountries;
+
+                int i = 0;
+                while (*it != -1)
+                {
+                    it++;
+                    i++;
+                }
+                return i + 1;
+            }
+            else
+            {
+                Troop* it = country->troops;
+
+                int i = 0;
+                while (it != NULL)
+                {
+                    if (it->team == MY_TEAM)
+                    {
+                        i++;
+                    }
+                    it = it->next;
+                }
+                return i + 1;
+            }
         }
         return 0;
     }
@@ -122,6 +157,7 @@ char* OnMenuTitle()
         if (menuIndex == MENU_UNASSIGNED) return "Troop Management";
         if (menuIndex == MENU_CREATE_TROOP) return "New troop";
         if (menuIndex == MENU_UPGRADE_TROOP) return "Train troop";
+        if (menuIndex == MENU_MOVE_TROOP) return "Destination";
 
         return "UNKNOWN";
     }
@@ -169,6 +205,30 @@ char* OnMenuLabel(u16 index)
             }
             return "Back";
         }
+        else if (menuIndex == MENU_MOVE_TROOP)
+        {
+            if (moveDestination == -1)
+            {
+                u16* it = countries->nearbyCountries;
+
+                int i = 0;
+                while (*it != -1)
+                {
+                    if (i == index)
+                    {
+                        Country* dest = &countries[*it];
+                        return dest->name;
+                    }
+                    i++;
+                    it++;
+                }
+                return "Back";
+            }
+            else
+            {
+
+            }
+        }
         return NULL;
     }
 
@@ -193,7 +253,14 @@ bool OnMenuSelect(u16 index)
             if (!haveAnyTroops) return false;
 
             menuIndex = MENU_UPGRADE_TROOP;
+        }
+        else if (index == 2) // Move troop
+        {
+            bool haveAnyTroops = HaveAnyAllies(country->troops);
+            if (!haveAnyTroops) return false;
 
+            menuIndex = MENU_MOVE_TROOP;
+            moveDestination = -1;
         }
     }
     else if (menuIndex == MENU_CREATE_TROOP)
@@ -250,6 +317,29 @@ bool OnMenuSelect(u16 index)
         }
 
         menuIndex = MENU_UNASSIGNED;
+    }
+    else if (menuIndex == MENU_MOVE_TROOP)
+    {
+        if (moveDestination == -1)
+        {
+            u16* it = countries->nearbyCountries;
+
+            int i = 0;
+            while (*it != -1)
+            {
+                if (i == index)
+                {
+                    moveDestination = *it;
+                    break;
+                }
+                i++;
+                it++;
+            }
+        }
+        else
+        {
+
+        }
     }
 
     return true;

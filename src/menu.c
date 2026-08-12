@@ -6,6 +6,7 @@ s16 Wrap(s16 x, s16 min, s16 max);
 void Menu_Draw(Menu* menu)
 {
     u16 numItems = menu->getNumItems();
+    if (numItems > MENU_MAX_CHOICE_COUNT) numItems = MENU_MAX_CHOICE_COUNT - 1;
 
     u16 i;
     consoleDrawText(0, 4, "%s                    ", menu->getTitle());
@@ -14,7 +15,7 @@ void Menu_Draw(Menu* menu)
         char* label = menu->getLabel(i);
         consoleDrawText(0, 5 + 2 * (i + 1), "%s%s                    ", menu->index == i ? "x" : " ", label);
     }
-    for (i = numItems; i < 5; i++)
+    for (i = numItems; i < MENU_MAX_CHOICE_COUNT; i++)
     {
         consoleDrawText(0, 5 + 2 * (i + 1), "                              ");
     }

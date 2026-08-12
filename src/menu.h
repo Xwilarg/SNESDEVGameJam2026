@@ -2,6 +2,8 @@
 
 #include <snes.h>
 
+#define MENU_MAX_CHOICE_COUNT 6
+
 typedef struct Menu
 {
     s16 index;
