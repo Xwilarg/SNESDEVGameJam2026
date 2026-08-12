@@ -301,6 +301,7 @@ bool OnMenuSelect(u16 index)
         else if (index == 3) // Pass turn
         {
             ++turn;
+            is_turn_started = false;
             UpdateCountryLabel(country);
         }
     }
