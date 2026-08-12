@@ -367,7 +367,6 @@ bool OnMenuSelect(u16 index)
                     if (i == index)
                     {
                         Country* dest = &countries[moveDestination];
-                        Country_AddExisting(dest, it);
 
                         if (lastIt == NULL)
                         {
@@ -377,6 +376,8 @@ bool OnMenuSelect(u16 index)
                         {
                             lastIt->next = it->next;
                         }
+
+                        Country_AddExisting(dest, it);
 
                         return true;
                     }
