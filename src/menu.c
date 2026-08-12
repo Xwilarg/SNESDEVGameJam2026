@@ -33,12 +33,18 @@ void Menu_Input(Menu* menu, u16 pad0)
         menu->index = Wrap(menu->index + 1, 0, menu->getNumItems() - 1);
         Menu_Draw(menu);
         break;
-    case KEY_X:
+    case KEY_B:
         if (menu->select(menu->index))
         {
             menu->index = 0;
             Menu_Draw(menu);
         }
+        break;
+
+    case KEY_A:
+        menu->index = 0;
+        menu->reset();
+        Menu_Draw(menu);
         break;
     }
 }

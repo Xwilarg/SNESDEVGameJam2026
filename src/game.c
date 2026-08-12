@@ -27,6 +27,7 @@ u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
 char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
+void OnMenuReset(void);
 
 char buffer[30];
 
@@ -38,7 +39,8 @@ Menu menu = {
     &GetMenuItemCount,
     &OnMenuTitle,
     &OnMenuLabel,
-    &OnMenuSelect
+    &OnMenuSelect,
+    &OnMenuReset
 };
 
 s16 Lerp(s16 x, s16 dest)
@@ -164,6 +166,20 @@ char* OnMenuTitle()
     }
 
     return "Diplomacy Options";
+}
+
+void OnMenuReset()
+{
+    Country* country = &countries[countryIndex];
+
+    if (country->team == MY_TEAM)
+    {
+        if (menuIndex == MENU_MOVE_TROOP && moveDestination != -1) moveDestination = -1;
+        else
+        {
+            menuIndex = MENU_UNASSIGNED;
+        }
+    }
 }
 
 char* OnMenuLabel(u16 index)
@@ -402,19 +418,23 @@ void Game_Update(void)
     switch (pad0)
     {
     case KEY_LEFT:
-        countryIndex = Wrap(countryIndex - 1, 0, COUNTRY_COUNT - 1);
-        menuIndex = MENU_UNASSIGNED;
-        LerpTowardsCountry(countryIndex);
+        if (!is_turn_started)
+        {
+            countryIndex = Wrap(countryIndex - 1, 0, COUNTRY_COUNT - 1);
+            menuIndex = MENU_UNASSIGNED;
+            LerpTowardsCountry(countryIndex);
+        }
         break;
     case KEY_RIGHT:
-        countryIndex = Wrap(countryIndex + 1, 0, COUNTRY_COUNT - 1);
-        menuIndex = MENU_UNASSIGNED;
-        LerpTowardsCountry(countryIndex);
+        if (!is_turn_started)
+        {
+            countryIndex = Wrap(countryIndex + 1, 0, COUNTRY_COUNT - 1);
+            menuIndex = MENU_UNASSIGNED;
+            LerpTowardsCountry(countryIndex);
+        }
         break;
 
-    case KEY_UP:
-    case KEY_DOWN:
-    case KEY_X:
+    default:
         Menu_Input(&menu, pad0);
         break;
     }
