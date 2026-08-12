@@ -187,7 +187,7 @@ char* OnMenuLabel(u16 index)
         }
         else if (menuIndex == MENU_UPGRADE_TROOP)
         {
-            Troop* it = countries->troops;
+            Troop* it = country->troops;
 
             int i = 0;
             while (it != NULL)
@@ -209,7 +209,7 @@ char* OnMenuLabel(u16 index)
         {
             if (moveDestination == -1)
             {
-                u16* it = countries->nearbyCountries;
+                u16* it = country->nearbyCountries;
 
                 int i = 0;
                 while (*it != -1)
@@ -226,7 +226,25 @@ char* OnMenuLabel(u16 index)
             }
             else
             {
+                Troop* it = country->troops;
 
+                int i = 0;
+                while (it != NULL)
+                {
+                    if (it->team == MY_TEAM)
+                    {
+                        if (i == index)
+                        {
+                            snprintf(buffer, sizeof(buffer), "%s (%d)", TroopTypeToString(it->type), it->level);
+                            return buffer;
+                        }
+                    }
+                    it = it->next;
+                    i++;
+
+                    if (i == MENU_MAX_CHOICE_COUNT) return "Back";
+                }
+                return "Back";
             }
         }
         return NULL;
@@ -297,7 +315,7 @@ bool OnMenuSelect(u16 index)
     }
     else if (menuIndex == MENU_UPGRADE_TROOP)
     {
-        Troop* it = countries->troops;
+        Troop* it = country->troops;
 
         int i = 0;
         while (it != NULL)
@@ -322,7 +340,7 @@ bool OnMenuSelect(u16 index)
     {
         if (moveDestination == -1)
         {
-            u16* it = countries->nearbyCountries;
+            u16* it = country->nearbyCountries;
 
             int i = 0;
             while (*it != -1)
@@ -338,7 +356,37 @@ bool OnMenuSelect(u16 index)
         }
         else
         {
+            Troop* lastIt = NULL;
+            Troop* it = country->troops;
 
+            int i = 0;
+            while (it != NULL && i < MENU_MAX_CHOICE_COUNT)
+            {
+                if (it->team == MY_TEAM && CanBeUpgrade(it))
+                {
+                    if (i == index)
+                    {
+                        Country* dest = &countries[moveDestination];
+                        Country_AddExisting(dest, it);
+
+                        if (lastIt == NULL)
+                        {
+                            country->troops = it->next;
+                        }
+                        else
+                        {
+                            lastIt->next = it->next;
+                        }
+
+                        return true;
+                    }
+                }
+                lastIt = it;
+                it = it->next;
+                i++;
+            }
+
+            menuIndex = MENU_UNASSIGNED;
         }
     }
 

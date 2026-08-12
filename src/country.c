@@ -139,3 +139,13 @@ Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
 
     return troop;
 }
+
+Troop* Country_AddExisting(Country* country, Troop *t)
+{
+    if (country->troops != NULL)
+    {
+        t->next = country->troops;
+    }
+
+    country->troops = t;
+}
