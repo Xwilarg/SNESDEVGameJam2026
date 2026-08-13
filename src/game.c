@@ -9,18 +9,18 @@
 #define MODE_FREEROAM 0
 #define MODE_COMBAT_REPORT 1
 
-u16 currentMode = MODE_FREEROAM;
+static u16 currentMode = MODE_FREEROAM;
 
 #define SCROLL_SPEED 5
 
-s16 countryIndex = 0;
+static s16 countryIndex = 0;
 
-u16 turn = 0;
-bool isTurnStarted = false;
+static u16 turn = 0;
+static bool isTurnStarted = false;
 
-Phase* currPhase;
+static Phase* currPhase;
 
-s16 Lerp(s16 x, s16 dest)
+static s16 Lerp(s16 x, s16 dest)
 {
     if (x < dest)
     {
