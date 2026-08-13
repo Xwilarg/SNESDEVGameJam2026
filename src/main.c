@@ -1,5 +1,6 @@
 #include <snes.h>
 
+#include "game.h"
 #include "world.h"
 #include "country.h"
 

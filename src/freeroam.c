@@ -2,6 +2,8 @@
 
 #include <snes.h>
 
+#include <stdio.h> // snprintf
+
 #include "game.h"
 #include "country.h"
 #include "menu.h"
@@ -24,6 +26,9 @@ char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
 void OnMenuReset(void);
 
+void ReachCountry(void);
+void Update(bool isTurnStarted);
+
 char buffer[30];
 
 Menu menu = {
@@ -38,6 +43,13 @@ Phase phase = {
     &ReachCountry,
     &Update
 };
+
+s16 Wrap(s16 x, s16 min, s16 max)
+{
+    if (x < min) x = max;
+    if (x > max) x = min;
+    return x;
+}
 
 u16 GetMenuItemCount()
 {
@@ -276,7 +288,7 @@ bool OnMenuSelect(u16 index)
             Country_NewTroop(country, type, MY_TEAM);
 
             --country->population;
-            UpdateCountryLabel(country);
+            Game_UpdateCountryLabel();
 
             Game_StartTurn();
         }
@@ -296,7 +308,7 @@ bool OnMenuSelect(u16 index)
                 {
                     ++it->level;
                     --country->population;
-                    UpdateCountryLabel(country);
+                    Game_UpdateCountryLabel();
                     Game_StartTurn();
                     break;
                 }

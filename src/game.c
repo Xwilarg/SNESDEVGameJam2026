@@ -2,13 +2,10 @@
 
 #include <snes.h>
 
-#include <stdio.h> // snprintf
-
 #include "world.h"
 #include "menu.h"
 #include "freeroam.h"
 #include "phase.h"
-
 
 #define MODE_FREEROAM 0
 #define MODE_COMBAT_REPORT 1
@@ -39,15 +36,10 @@ s16 Lerp(s16 x, s16 dest)
     return x;
 }
 
-s16 Wrap(s16 x, s16 min, s16 max)
+void Game_UpdateCountryLabel()
 {
-    if (x < min) x = max;
-    if (x > max) x = min;
-    return x;
-}
+    Country* country = Game_GetCurrentCountry();
 
-void UpdateCountryLabel(Country* country)
-{
     if (countryIndex != 0 && country->team == MY_TEAM)
     {
         consoleDrawText(0, 0, "%s (%d) [CONQUIERED]           ", country->name, country->population);
@@ -76,7 +68,7 @@ void LerpTowardsCountry(u16 index)
     Country* country = &countries[index];
     LerpTowards(country->xPos, country->yPos);
 
-    UpdateCountryLabel(country);
+    Game_UpdateCountryLabel(country);
 
     phase->reachCountry();
 }
@@ -103,7 +95,7 @@ void Game_PassTurn(void)
 {
     ++turn;
     isTurnStarted = false;
-    UpdateCountryLabel(Game_GetCurrentCountry());
+    Game_UpdateCountryLabel(Game_GetCurrentCountry());
 }
 
 void Game_StartTurn(void)

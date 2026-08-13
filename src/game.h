@@ -10,5 +10,6 @@ void Game_PassTurn(void);
 void Game_StartTurn(void);
 void Game_UpdateCurrentCountry(u16 index);
 u16 Game_GetCountryIndex(void);
+void Game_UpdateCountryLabel(void);
 
 #endif
