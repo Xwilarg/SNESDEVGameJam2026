@@ -4,7 +4,7 @@
 
 #define MENU_MAX_CHOICE_COUNT 6
 
-typedef struct Menu
+typedef struct
 {
     s16 index;
     u16 (*getNumItems)(void);
@@ -16,4 +16,5 @@ typedef struct Menu
 } Menu;
 
 void Menu_Draw(Menu* menu);
+void Menu_Clear(void);
 void Menu_Input(Menu* menu, u16 pad0);

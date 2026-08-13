@@ -21,6 +21,16 @@ void Menu_Draw(Menu* menu)
     }
 }
 
+void Menu_Clear(void)
+{
+    consoleDrawText(0, 4, "                              ");
+    u16 i;
+    for (i = 0; i < MENU_MAX_CHOICE_COUNT; i++)
+    {
+        consoleDrawText(0, 5 + 2 * (i + 1), "                              ");
+    }
+}
+
 void Menu_Input(Menu* menu, u16 pad0)
 {
     switch (pad0)
