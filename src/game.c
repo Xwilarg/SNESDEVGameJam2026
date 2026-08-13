@@ -5,7 +5,6 @@
 #include "world.h"
 #include "menu.h"
 #include "freeroam.h"
-#include "phase.h"
 
 #define MODE_FREEROAM 0
 #define MODE_COMBAT_REPORT 1
@@ -19,7 +18,7 @@ s16 countryIndex = 0;
 u16 turn = 0;
 bool isTurnStarted = false;
 
-Phase* phase;
+Phase* currPhase;
 
 s16 Lerp(s16 x, s16 dest)
 {
@@ -70,7 +69,7 @@ void LerpTowardsCountry(u16 index)
 
     Game_UpdateCountryLabel(country);
 
-    phase->reachCountry();
+    currPhase->reachCountry();
 }
 
 Country *Game_GetCurrentCountry(void)
@@ -80,13 +79,13 @@ Country *Game_GetCurrentCountry(void)
 
 void Game_Init()
 {
-    phase = FreeRoam_GetPhase();
+    currPhase = FreeRoam_GetPhase();
     LerpTowardsCountry(countryIndex);
 }
 
 void Game_Update(void)
 {
-    phase->update(isTurnStarted);
+    currPhase->update(isTurnStarted);
 
     WaitForVBlank();
 }
