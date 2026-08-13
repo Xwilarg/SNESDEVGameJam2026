@@ -2,14 +2,6 @@
 
 static u16 pad0;
 
-static void ReachCountry(void);
-static void Update(bool isTurnStarted);
-
-static Phase phase = {
-    &ReachCountry,
-    &Update
-};
-
 static void ReachCountry(void)
 {
 }
@@ -22,6 +14,11 @@ static void Update(bool isTurnStarted)
     {
     }
 }
+
+static Phase phase = {
+    &ReachCountry,
+    &Update
+};
 
 Phase* Report_GetPhase()
 {

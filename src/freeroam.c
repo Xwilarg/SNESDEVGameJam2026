@@ -13,12 +13,12 @@
 #define MENU_UPGRADE_TROOP 2
 #define MENU_MOVE_TROOP 3
 
-u16 pad0;
+static u16 pad0;
 
-u16 menuIndex = 0;
+static u16 menuIndex = 0;
 
 // Moving troops
-s16 moveDestination = -1;
+static s16 moveDestination = -1;
 
 u16 GetMenuItemCount(void);
 char* OnMenuTitle(void);
@@ -26,22 +26,15 @@ char* OnMenuLabel(u16 index);
 bool OnMenuSelect(u16 index);
 void OnMenuReset(void);
 
-void ReachCountry(void);
-void Update(bool isTurnStarted);
+static char buffer[30];
 
-char buffer[30];
-
-Menu menu = {
+static Menu menu = {
     0,
     &GetMenuItemCount,
     &OnMenuTitle,
     &OnMenuLabel,
     &OnMenuSelect,
     &OnMenuReset
-};
-Phase phase = {
-    &ReachCountry,
-    &Update
 };
 
 s16 Wrap(s16 x, s16 min, s16 max)
@@ -50,6 +43,43 @@ s16 Wrap(s16 x, s16 min, s16 max)
     if (x > max) x = min;
     return x;
 }
+
+static void ReachCountry(void)
+{
+    Menu_Draw(&menu);
+}
+
+static void Update(bool isTurnStarted)
+{
+    pad0 = padsDown(0);
+
+    switch (pad0)
+    {
+    case KEY_LEFT:
+        if (!isTurnStarted)
+        {
+            menuIndex = MENU_UNASSIGNED;
+            Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() - 1, 0, COUNTRY_COUNT - 1));
+        }
+        break;
+    case KEY_RIGHT:
+        if (!isTurnStarted)
+        {
+            menuIndex = MENU_UNASSIGNED;
+            Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() + 1, 0, COUNTRY_COUNT - 1));
+        }
+        break;
+
+    default:
+        Menu_Input(&menu, pad0);
+        break;
+    }
+}
+
+static Phase phase = {
+    &ReachCountry,
+    &Update
+};
 
 u16 GetMenuItemCount()
 {
@@ -378,38 +408,6 @@ bool OnMenuSelect(u16 index)
     }
 
     return true;
-}
-
-void ReachCountry(void)
-{
-    Menu_Draw(&menu);
-}
-
-void Update(bool isTurnStarted)
-{
-    pad0 = padsDown(0);
-
-    switch (pad0)
-    {
-    case KEY_LEFT:
-        if (!isTurnStarted)
-        {
-            menuIndex = MENU_UNASSIGNED;
-            Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() - 1, 0, COUNTRY_COUNT - 1));
-        }
-        break;
-    case KEY_RIGHT:
-        if (!isTurnStarted)
-        {
-            menuIndex = MENU_UNASSIGNED;
-            Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() + 1, 0, COUNTRY_COUNT - 1));
-        }
-        break;
-
-    default:
-        Menu_Input(&menu, pad0);
-        break;
-    }
 }
 
 Phase* FreeRoam_GetPhase()
