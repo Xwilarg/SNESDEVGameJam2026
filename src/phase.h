@@ -5,6 +5,8 @@
 
 typedef struct
 {
+    void (*init)(void);
+    void (*cleanup)(void);
     void (*reachCountry)(void);
     void (*update)(bool isTurnStarted);
 } Phase;

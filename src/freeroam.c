@@ -44,6 +44,15 @@ s16 Wrap(s16 x, s16 min, s16 max)
     return x;
 }
 
+static void Init(void)
+{
+}
+
+static void Cleanup(void)
+{
+    Menu_Clear();
+}
+
 static void ReachCountry(void)
 {
     Menu_Draw(&menu);
@@ -77,6 +86,8 @@ static void Update(bool isTurnStarted)
 }
 
 static Phase phase = {
+    &Init,
+    &Cleanup,
     &ReachCountry,
     &Update
 };

@@ -86,6 +86,7 @@ void Game_Init()
 void Game_Update(void)
 {
     currPhase->update(isTurnStarted);
+    currPhase->init();
 
     WaitForVBlank();
 }
