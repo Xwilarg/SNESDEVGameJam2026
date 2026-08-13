@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TROOP_H
+#define TROOP_H
 
 #include <snes.h>
 
@@ -25,3 +26,5 @@ bool HaveAnyAllies(Troop* list);
 bool HaveAnyUpgradableAllies(Troop* list);
 bool CanBeUpgrade(Troop* t);
 char* TroopTypeToString(TroopType type);
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COUNTRY_H
+#define COUNTRY_H
 
 #include <snes.h>
 
@@ -23,3 +24,5 @@ extern Country countries[COUNTRY_COUNT];
 
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team);
 Troop* Country_AddExisting(Country* country, Troop *t);
+
+#endif
