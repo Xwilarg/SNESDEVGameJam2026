@@ -410,8 +410,6 @@ void Update(bool isTurnStarted)
         Menu_Input(&menu, pad0);
         break;
     }
-
-    WaitForVBlank();
 }
 
 Phase* FreeRoam_GetPhase()
