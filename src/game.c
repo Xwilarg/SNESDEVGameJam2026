@@ -5,11 +5,7 @@
 #include "world.h"
 #include "menu.h"
 #include "freeroam.h"
-
-#define MODE_FREEROAM 0
-#define MODE_COMBAT_REPORT 1
-
-static u16 currentMode = MODE_FREEROAM;
+#include "report.h"
 
 #define SCROLL_SPEED 5
 
@@ -77,16 +73,27 @@ Country *Game_GetCurrentCountry(void)
     return &countries[countryIndex];
 }
 
-void Game_Init()
+void Game_SwitchToModeFreeRoam(void)
 {
     currPhase = FreeRoam_GetPhase();
-    LerpTowardsCountry(countryIndex);
+    currPhase->init();
+}
+
+void Game_SwitchToModeReport(void)
+{
+    currPhase = Report_GetPhase();
+    currPhase->init();
+}
+
+void Game_Init()
+{
+    Game_SwitchToModeFreeRoam();
+    Game_UpdateCurrentCountry(0);
 }
 
 void Game_Update(void)
 {
     currPhase->update(isTurnStarted);
-    currPhase->init();
 
     WaitForVBlank();
 }
@@ -96,6 +103,8 @@ void Game_PassTurn(void)
     ++turn;
     isTurnStarted = false;
     Game_UpdateCountryLabel(Game_GetCurrentCountry());
+
+    Game_SwitchToModeReport();
 }
 
 void Game_StartTurn(void)

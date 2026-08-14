@@ -126,6 +126,22 @@ Country countries[COUNTRY_COUNT] = {
     }
 };
 
+bool Country_HaveConflictPending(Country* country)
+{
+    if (country->troops == NULL) return false;
+
+    Troop* it = country->troops;
+    u16 teamRef = country->team;
+
+    while (it != NULL)
+    {
+        if (teamRef != it->team) return true;
+        it = it->next;
+    }
+
+    return false;
+}
+
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
 {
     Troop* troop = Troop_New(troopType, team);

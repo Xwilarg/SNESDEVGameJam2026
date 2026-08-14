@@ -24,5 +24,6 @@ extern Country countries[COUNTRY_COUNT];
 
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team);
 Troop* Country_AddExisting(Country* country, Troop *t);
+bool Country_HaveConflictPending(Country* country);
 
 #endif
