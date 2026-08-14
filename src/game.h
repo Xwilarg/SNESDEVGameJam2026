@@ -12,4 +12,7 @@ void Game_UpdateCurrentCountry(u16 index);
 u16 Game_GetCountryIndex(void);
 void Game_UpdateCountryLabel(void);
 
+void Game_SwitchToModeFreeRoam(void);
+void Game_SwitchToModeReport(void);
+
 #endif
