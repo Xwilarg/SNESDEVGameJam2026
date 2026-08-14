@@ -14,7 +14,7 @@ static s16 countryIndex = 0;
 static u16 turn = 0;
 static bool isTurnStarted = false;
 
-static Phase* currPhase;
+static Phase* currPhase = NULL;
 
 static s16 Lerp(s16 x, s16 dest)
 {
@@ -75,12 +75,14 @@ Country *Game_GetCurrentCountry(void)
 
 void Game_SwitchToModeFreeRoam(void)
 {
+    if (currPhase != NULL) currPhase->cleanup();
     currPhase = FreeRoam_GetPhase();
     currPhase->init();
 }
 
 void Game_SwitchToModeReport(void)
 {
+    if (currPhase != NULL) currPhase->cleanup();
     currPhase = Report_GetPhase();
     currPhase->init();
 }
