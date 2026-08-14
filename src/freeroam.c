@@ -46,6 +46,7 @@ s16 Wrap(s16 x, s16 min, s16 max)
 
 static void Init(void)
 {
+    menu.index = 0;
 }
 
 static void Cleanup(void)
@@ -315,6 +316,7 @@ bool OnMenuSelect(u16 index)
         else if (index == 3) // Pass turn
         {
             Game_PassTurn();
+            return false;
         }
     }
     else if (menuIndex == MENU_CREATE_TROOP)
