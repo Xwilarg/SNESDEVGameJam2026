@@ -83,12 +83,12 @@ static void StartBattle(void)
     if (playerTroopCount == 0)
     {
         consoleDrawText(0, 6, "Your are not in this battle");
-        consoleDrawText(0, 7, "Others troops: %d", playerTroopCount);
+        consoleDrawText(0, 7, "Others troops: %d", otherTroopCount);
     }
     else
     {
         consoleDrawText(0, 6, "Your troops: %d", playerTroopCount);
-        consoleDrawText(0, 7, "Enemies troops: %d", playerTroopCount);
+        consoleDrawText(0, 7, "Enemies troops: %d", otherTroopCount);
     } 
     
     consoleDrawText(0, 20, "Press A to continue");
