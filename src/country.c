@@ -159,6 +159,58 @@ Country countries[COUNTRY_COUNT] = {
     }
 };
 
+static bool LookForTargetAndFight(Troop* me, Troop *allTroops)
+{
+    Troop* fightingCandidate = NULL;
+
+    Troop* it = allTroops;
+    while (it != NULL)
+    {
+        if (it->team != me->team) // it is of different team
+        {
+            if (fightingCandidate == NULL)
+            {
+                fightingCandidate = it;
+            }
+            // TODO: Determine target
+        }
+
+        it = it->next;
+    }
+
+    if (fightingCandidate == NULL) return false;
+}
+
+void Country_ResolveBattle(Country* country)
+{
+    int troopIndex = 0;
+
+    while (true)
+    {
+        Troop* it = country->troops;
+        int i = 0;
+        while (it != NULL)
+        {
+            if (troopIndex == i)
+            {
+                if (!LookForTargetAndFight(it, country->troops))
+                {
+                    it = NULL; // Nobody else to fight
+                }
+                break;
+            }
+
+            it = it->next;
+            ++i;
+        }
+
+        if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
+        {
+            break;
+        }
+    }
+}
+
 bool Country_HaveConflictPending(Country* country)
 {
     if (country->troops == NULL) return false;
