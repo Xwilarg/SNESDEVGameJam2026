@@ -3,8 +3,8 @@ $(error "Please create an environment variable PVSNESLIB_HOME by following this 
 endif
 
 # ROMNAME and variables are used in snes_rules file
-export ROMNAME := ./out/hello_world
-export ROMTITLE := LIBSNES HELLO WORLD
+export ROMNAME := ./out/uncivilized
+export ROMTITLE := Uncivilized
 
 include ${PVSNESLIB_HOME}/devkitsnes/snes_rules
 
