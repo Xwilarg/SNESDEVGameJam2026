@@ -9,7 +9,10 @@ Country countries[COUNTRY_COUNT] = {
         286,
 
         NULL, // Troops
+
         3, // Population
+        3,
+
         MY_TEAM, // Team
 
         (u16[]){ 1, 3, -1 }
@@ -20,7 +23,10 @@ Country countries[COUNTRY_COUNT] = {
         286,
 
         NULL, // Troops
+
         4, // Population
+        4,
+
         1, // Team
 
         (u16[]){ 0, 2, 3, -1 }
@@ -31,7 +37,10 @@ Country countries[COUNTRY_COUNT] = {
         286,
 
         NULL, // Troops
+
         4, // Population
+        4,
+
         2, // Team
 
         (u16[]){ 1, 5, -1 }
@@ -42,7 +51,10 @@ Country countries[COUNTRY_COUNT] = {
         184,
 
         NULL, // Troops
+
         4, // Population
+        4,
+
         3, // Team
 
         (u16[]){ 0, 1, 9, -1 }
@@ -53,7 +65,10 @@ Country countries[COUNTRY_COUNT] = {
         188,
 
         NULL, // Troops
+
         2, // Population
+        2,
+
         4, // Team
 
         (u16[]){ 5, 6, -1 }
@@ -64,7 +79,10 @@ Country countries[COUNTRY_COUNT] = {
         226,
 
         NULL, // Troops
+
         2, // Population
+        2,
+
         5, // Team
 
         (u16[]){ 2, 4, -1 }
@@ -75,7 +93,10 @@ Country countries[COUNTRY_COUNT] = {
         50,
 
         NULL, // Troops
+
         3, // Population
+        3,
+
         6, // Team
 
         (u16[]){ 4, 7, -1 }
@@ -86,7 +107,10 @@ Country countries[COUNTRY_COUNT] = {
         36,
 
         NULL, // Troops
+
         3, // Population
+        3,
+
         7, // Team
 
         (u16[]){ 6, 8, -1 }
@@ -97,7 +121,10 @@ Country countries[COUNTRY_COUNT] = {
         30,
 
         NULL, // Troops
+
         7, // Population
+        7,
+
         8, // Team
 
         (u16[]){ 7, 9, 10, -1 }
@@ -108,7 +135,10 @@ Country countries[COUNTRY_COUNT] = {
         90,
 
         NULL, // Troops
+
         1, // Population
+        1,
+
         9, // Team
 
         (u16[]){ 3, 8, -1 }
@@ -119,7 +149,10 @@ Country countries[COUNTRY_COUNT] = {
         0,
 
         NULL, // Troops
+
         3, // Population
+        3,
+
         10, // Team
 
         (u16[]){ 8, -1 }

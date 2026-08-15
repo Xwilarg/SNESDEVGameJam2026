@@ -14,6 +14,8 @@ typedef struct
     u16 xPos;
     u16 yPos;
     Troop* troops;
+
+    u16 maxPopulation;
     u16 population;
 
     u16 team;
