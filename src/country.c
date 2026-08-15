@@ -175,6 +175,16 @@ bool Country_HaveConflictPending(Country* country)
     return false;
 }
 
+void Country_ResolveAITurn(Country* country)
+{
+    while (country->population > 0)
+    {
+        Country_NewTroop(country, SWORDMAN, country->team);
+
+        --country->population;
+    }
+}
+
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
 {
     Troop* troop = Troop_New(troopType, team);

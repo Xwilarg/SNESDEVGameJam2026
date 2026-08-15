@@ -47,10 +47,27 @@ s16 Wrap(s16 x, s16 min, s16 max)
 static void Init(void)
 {
     menu.index = 0;
+
+    u16 i;
+    for (i = 0; i < COUNTRY_COUNT; i++)
+    {
+        Country* country = &countries[i];
+        country->population = country->maxPopulation;
+    }
 }
 
 static void Cleanup(void)
 {
+    u16 i;
+    for (i = 0; i < COUNTRY_COUNT; i++)
+    {
+        Country* country = &countries[i];
+        if (country->team != MY_TEAM)
+        {
+            Country_ResolveAITurn(country);
+        }
+    }
+
     Menu_Clear();
 }
 
