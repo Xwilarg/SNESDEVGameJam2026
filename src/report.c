@@ -73,6 +73,25 @@ static u16 GetNonPlayerTroopCount(Country* country)
     return count;
 }
 
+static s16 GetWinningTeam()
+{
+    Country* country = Game_GetCurrentCountry();
+
+    if (country->troops == NULL) return country->team;
+
+    Troop* it = country->troops;
+    u16 ref = it->team;
+
+    while (it != NULL)
+    {
+        if (it->team != ref) return -1;
+
+        it = it->next;
+    }
+
+    return (s16)ref;
+}
+
 static void StartBattle(void)
 {
     Country* country = Game_GetCurrentCountry();
