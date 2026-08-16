@@ -201,7 +201,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
     {
         Country_RemoveExisting(country, lastIt, fightingCandidate);
         free(fightingCandidate);
-        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", me->team == MY_TEAM ? "YOU" : "ENN", defenseStr);
+        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr);
         ++yWriteIndex;
     }
 
@@ -230,6 +230,7 @@ static void ShowBattleRound()
                 {
                     it = NULL; // Nobody else to fight
                 }
+                ++troopIndex;
                 break;
             }
 
