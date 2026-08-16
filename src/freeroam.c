@@ -412,14 +412,7 @@ bool OnMenuSelect(u16 index)
                         Country* dest = &countries[moveDestination];
 
                         // Remove troop from current country...
-                        if (lastIt == NULL)
-                        {
-                            country->troops = it->next;
-                        }
-                        else
-                        {
-                            lastIt->next = it->next;
-                        }
+                        Country_RemoveExisting(dest, it, lastIt);
 
                         // ...and add it to the destination one
                         Country_AddExisting(dest, it);

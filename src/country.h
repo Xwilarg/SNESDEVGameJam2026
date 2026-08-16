@@ -26,6 +26,7 @@ typedef struct
 extern Country countries[COUNTRY_COUNT];
 
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team);
+void Country_RemoveExisting(Country* country, Troop* last, Troop* t);
 void Country_AddExisting(Country* country, Troop *t);
 bool Country_HaveConflictPending(Country* country);
 void Country_ResolveBattle(Country* country);

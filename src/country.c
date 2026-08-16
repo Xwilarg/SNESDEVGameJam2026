@@ -159,11 +159,17 @@ Country countries[COUNTRY_COUNT] = {
     }
 };
 
-static bool LookForTargetAndFight(Troop* me, Troop *allTroops)
+static u16 GetTroopRoll(Troop* t)
+{
+    return rand() % (2 + (t->level * 2))
+}
+
+static bool LookForTargetAndFight(Country* country, Troop* me)
 {
     Troop* fightingCandidate = NULL;
 
-    Troop* it = allTroops;
+    Troop* it = country->troops;
+    Troop* lastIt = NULL;
     while (it != NULL)
     {
         if (it->team != me->team) // it is of different team
@@ -171,15 +177,24 @@ static bool LookForTargetAndFight(Troop* me, Troop *allTroops)
             if (fightingCandidate == NULL)
             {
                 fightingCandidate = it;
+                break;
             }
             // TODO: Determine target
         }
 
+        lastIt = it;
         it = it->next;
     }
 
     if (fightingCandidate == NULL) return false;
     
+    u16 attack = GetTroopRoll(it);
+    u16 defense = GetTroopRoll(fightingCandidate);
+
+    if (attack > defense)
+    {
+        Country_RemoveExisting(country, lastIt, fightingCandidate);
+    }
 
     // TODO: fight
     return true;
@@ -197,7 +212,7 @@ void Country_ResolveBattle(Country* country)
         {
             if (troopIndex == i)
             {
-                if (!LookForTargetAndFight(it, country->troops))
+                if (!LookForTargetAndFight(country, it))
                 {
                     it = NULL; // Nobody else to fight
                 }
@@ -255,6 +270,18 @@ Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
     country->troops = troop;
 
     return troop;
+}
+
+void Country_RemoveExisting(Country* country, Troop* last, Troop* t)
+{
+    if (last == NULL)
+    {
+        country->troops = t->next;
+    }
+    else
+    {
+        last->next = t->next;
+    }
 }
 
 void Country_AddExisting(Country* country, Troop *t)
