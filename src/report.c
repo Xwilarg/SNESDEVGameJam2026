@@ -162,7 +162,14 @@ static void ShowVictoryScreen(u16 winningTeam)
 
 static u16 GetTroopRoll(Troop* t)
 {
-    return rand() % (2 + (t->level * 2));
+    u16 nb = 0;
+    u16 i = 0;
+    while (i < t->level)
+    {
+        nb += 1 + (rand() % 4);
+        ++i;
+    }
+    return nb;
 }
 
 static bool LookForTargetAndFight(Country* country, Troop* me)
