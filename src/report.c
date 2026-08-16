@@ -253,6 +253,8 @@ static void ShowBattleRound()
 
 static void Update(bool isTurnStarted)
 {
+    rand(); // Shake randomness
+
     pad0 = padsDown(0);
 
     switch (pad0)
