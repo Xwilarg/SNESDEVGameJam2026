@@ -1,8 +1,11 @@
 #include "troop.h"
 
+#include <stdio.h> // snprintf
 #include <stdlib.h>
 
 #define MAX_UPGRADE_LEVEL 3
+
+static char buffer[30];
 
 Troop* Troop_New(TroopType type, int team)
 {
@@ -56,4 +59,10 @@ char* TroopTypeToString(TroopType type)
     if (type == BOWMAN) return "Bowman";
     if (type == SWORDMAN) return "Swordman";
     if (type == SPEARMAN) return "Spearman";
+}
+
+char* Troop_ToString(Troop* t)
+{
+    snprintf(buffer, sizeof(buffer), "%s (%d)", TroopTypeToString(t->type), t->level);
+    return buffer;
 }

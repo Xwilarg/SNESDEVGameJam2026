@@ -26,5 +26,6 @@ bool HaveAnyAllies(Troop* list);
 bool HaveAnyUpgradableAllies(Troop* list);
 bool CanBeUpgrade(Troop* t);
 char* TroopTypeToString(TroopType type);
+char* Troop_ToString(Troop* t);
 
 #endif

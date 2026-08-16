@@ -1,17 +1,34 @@
 #include "report.h"
+
+#include <stdlib.h>
+
 #include "country.h"
 #include "game.h"
 
 static u16 pad0;
 static u16 checkIndex;
 
+// Used for battle report, to know what line to write on
+static u16 yWriteIndex;
+
 #define REPORT_PHASE_PENDING 0
 #define REPORT_PHASE_INTRO 1
 #define REPORT_PHASE_VICTORY 2
 #define REPORT_PHASE_BATTLE 3
 
+#define MAX_BATTLE_IN_ROUND 10
+
 static u16 subPhase;
 static u16 currBattleRound;
+
+static void ClearScreen()
+{
+    u16 y;
+    for (y = 6; y < 15; y++)
+    {
+        consoleDrawText(0, y, "                                                   ");
+    }
+}
 
 static bool CheckToNextCountry()
 {
@@ -104,15 +121,6 @@ static s16 GetWinningTeam()
     return (s16)ref;
 }
 
-static void ClearScreen()
-{
-    u16 y;
-    for (y = 6; y < 15; y++)
-    {
-        consoleDrawText(0, y, "                                                   ");
-    }
-}
-
 static void StartBattle(void)
 {
     ClearScreen();
@@ -157,10 +165,97 @@ static void ShowVictoryScreen(u16 winningTeam)
     }
 }
 
+static u16 GetTroopRoll(Troop* t)
+{
+    return rand() % (2 + (t->level * 2));
+}
+
+static bool LookForTargetAndFight(Country* country, Troop* me)
+{
+    Troop* fightingCandidate = NULL;
+
+    Troop* it = country->troops;
+    Troop* lastIt = NULL;
+    while (it != NULL)
+    {
+        if (it->team != me->team) // it is of different team
+        {
+            if (fightingCandidate == NULL)
+            {
+                fightingCandidate = it;
+                break;
+            }
+            // TODO: Determine target
+        }
+
+        lastIt = it;
+        it = it->next;
+    }
+
+    if (fightingCandidate == NULL) return false;
+    
+    u16 attack = GetTroopRoll(it);
+    u16 defense = GetTroopRoll(fightingCandidate);
+
+    char* attackStr = Troop_ToString(it);
+    char* defenseStr = Troop_ToString(fightingCandidate);
+
+    if (attack > defense)
+    {
+        Country_RemoveExisting(country, lastIt, fightingCandidate);
+        free(fightingCandidate);
+        consoleDrawText(0, 6, "%s killed %s", attackStr, defenseStr);
+    }
+    else
+    {
+        consoleDrawText(0, 6, "%s blocked %s", attackStr, defenseStr);
+    }
+    ++yWriteIndex;
+
+    // TODO: fight
+    return true;
+}
+
 static void ShowBattleRound()
 {
     ClearScreen();
     consoleDrawText(0, 6, "Round %d", currBattleRound);
+    yWriteIndex = 8;
+
+    Country* country = Game_GetCurrentCountry();
+    
+    int troopIndex = 0;
+
+    while (true)
+    {
+        Troop* it = country->troops;
+        int i = 0;
+        while (it != NULL)
+        {
+            if (troopIndex == i)
+            {
+                if (!LookForTargetAndFight(country, it))
+                {
+                    it = NULL; // Nobody else to fight
+                }
+                break;
+            }
+
+            it = it->next;
+            ++i;
+
+            if (i == MAX_BATTLE_IN_ROUND) // Can't have too many people fighting in a single round
+            {
+                it = NULL;
+                break;
+            }
+        }
+
+        if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
+        {
+            break;
+        }
+    }
 }
 
 static void Update(bool isTurnStarted)
