@@ -284,8 +284,7 @@ char* OnMenuLabel(u16 index)
                     {
                         if (i == index)
                         {
-                            snprintf(buffer, sizeof(buffer), "%s (%d)", TroopTypeToString(it->type), it->level);
-                            return buffer;
+                            return Troop_ToString(it);
                         }
                     }
                     it = it->next;

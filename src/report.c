@@ -15,7 +15,7 @@ static u16 yWriteIndex;
 #define REPORT_PHASE_VICTORY 2
 #define REPORT_PHASE_BATTLE 3
 
-#define MAX_BATTLE_IN_ROUND 10
+#define MAX_BATTLE_IN_ROUND 18
 
 static u16 subPhase;
 static u16 currBattleRound;
@@ -136,7 +136,7 @@ static void StartBattle(void)
         consoleDrawText(0, 7, "Enemies troops: %d", otherTroopCount);
     } 
     
-    consoleDrawText(0, 20, "Press A to continue");
+    consoleDrawText(0, 26, "Press A to continue");
 }
 
 static void ReachCountry(void)
@@ -189,25 +189,22 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
 
     if (fightingCandidate == NULL) return false;
     
-    u16 attack = GetTroopRoll(it);
+    u16 attack = GetTroopRoll(me);
     u16 defense = GetTroopRoll(fightingCandidate);
 
-    char* attackStr = Troop_ToString(it);
-    char* defenseStr = Troop_ToString(fightingCandidate);
+    char* attackStr = Troop_ToShortString(me);
+    char* defenseStr = Troop_ToShortString(fightingCandidate);
+    consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackStr, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr, defense);
+    ++yWriteIndex;
 
     if (attack > defense)
     {
         Country_RemoveExisting(country, lastIt, fightingCandidate);
         free(fightingCandidate);
-        consoleDrawText(0, 6, "%s killed %s", attackStr, defenseStr);
+        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", me->team == MY_TEAM ? "YOU" : "ENN", defenseStr);
+        ++yWriteIndex;
     }
-    else
-    {
-        consoleDrawText(0, 6, "%s blocked %s", attackStr, defenseStr);
-    }
-    ++yWriteIndex;
 
-    // TODO: fight
     return true;
 }
 
@@ -237,13 +234,12 @@ static void ShowBattleRound()
             }
 
             it = it->next;
-            ++i;
+        }
+        
 
-            if (i == MAX_BATTLE_IN_ROUND) // Can't have too many people fighting in a single round
-            {
-                it = NULL;
-                break;
-            }
+        if (yWriteIndex >= MAX_BATTLE_IN_ROUND + 6) // Can't have too many people fighting in a single round
+        {
+            break;
         }
 
         if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
@@ -263,7 +259,7 @@ static void Update(bool isTurnStarted)
     case KEY_B:
         if (subPhase == REPORT_PHASE_INTRO)
         {
-            currBattleRound = 0;
+            currBattleRound = 1;
             s16 winningTeam = GetWinningTeam();
             if (winningTeam == -1)
             {

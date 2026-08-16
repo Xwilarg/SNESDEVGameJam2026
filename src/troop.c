@@ -61,8 +61,21 @@ char* TroopTypeToString(TroopType type)
     if (type == SPEARMAN) return "Spearman";
 }
 
+char* TroopTypeToShortString(TroopType type)
+{
+    if (type == BOWMAN) return "BOW";
+    if (type == SWORDMAN) return "SWD";
+    if (type == SPEARMAN) return "SPR";
+}
+
 char* Troop_ToString(Troop* t)
 {
-    snprintf(buffer, sizeof(buffer), "%s (%d)", TroopTypeToString(t->type), t->level);
+    snprintf(buffer, sizeof(buffer), "[%s%d] %s (%d)", TroopTypeToShortString(t->type), t->level, TroopTypeToString(t->type), t->level);
+    return buffer;
+}
+
+char* Troop_ToShortString(Troop* t)
+{
+    snprintf(buffer, sizeof(buffer), "%s%d", TroopTypeToShortString(t->type), t->level);
     return buffer;
 }
