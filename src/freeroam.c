@@ -405,7 +405,7 @@ bool OnMenuSelect(u16 index)
             int i = 0;
             while (it != NULL && i < MENU_MAX_CHOICE_COUNT)
             {
-                if (it->team == MY_TEAM && CanBeUpgrade(it))
+                if (it->team == MY_TEAM)
                 {
                     if (i == index)
                     {
