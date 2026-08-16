@@ -6,6 +6,7 @@
 #include "troop.h"
 
 #define COUNTRY_COUNT 11
+#define MAX_BATTLE_IN_ROUND 10
 
 typedef struct
 {

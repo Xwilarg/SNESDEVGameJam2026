@@ -179,6 +179,10 @@ static bool LookForTargetAndFight(Troop* me, Troop *allTroops)
     }
 
     if (fightingCandidate == NULL) return false;
+    
+
+    // TODO: fight
+    return true;
 }
 
 void Country_ResolveBattle(Country* country)
@@ -202,6 +206,12 @@ void Country_ResolveBattle(Country* country)
 
             it = it->next;
             ++i;
+
+            if (i == MAX_BATTLE_IN_ROUND) // Can't have too many people fighting in a single round
+            {
+                it = NULL;
+                break;
+            }
         }
 
         if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)

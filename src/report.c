@@ -5,9 +5,13 @@
 static u16 pad0;
 static u16 checkIndex;
 
-#define REPORT_PHASE_INTRO 0
+#define REPORT_PHASE_PENDING 0
+#define REPORT_PHASE_INTRO 1
+#define REPORT_PHASE_VICTORY 2
+#define REPORT_PHASE_BATTLE 3
 
 static u16 subPhase;
+static u16 currBattleRound;
 
 static bool CheckToNextCountry()
 {
@@ -24,21 +28,29 @@ static bool CheckToNextCountry()
     return false;
 }
 
-static void Init(void)
+static void AdvanceCountryCheck()
 {
-    checkIndex = 0;
     if (!CheckToNextCountry())
     {
         Game_SwitchToModeFreeRoam();
     }
     else
     {
-        subPhase = REPORT_PHASE_INTRO;
+        subPhase = REPORT_PHASE_PENDING;
     }
+
+}
+
+static void Init(void)
+{
+    checkIndex = 0;
+    AdvanceCountryCheck();
 }
 
 static void Cleanup(void)
 {
+    consoleDrawText(0, 4, "                                                   ");
+    ClearScreen();
 }
 
 static u16 GetPlayerTroopCount(Country* country)
@@ -92,10 +104,21 @@ static s16 GetWinningTeam()
     return (s16)ref;
 }
 
+static void ClearScreen()
+{
+    u16 y;
+    for (y = 6; y < 15; y++)
+    {
+        consoleDrawText(0, y, "                                                   ");
+    }
+}
+
 static void StartBattle(void)
 {
+    ClearScreen();
+
     Country* country = Game_GetCurrentCountry();
-    consoleDrawText(0, 4, "Battle in %s", country->name);
+    consoleDrawText(0, 4, "Battle for %s              ", country->name);
 
     u16 playerTroopCount = GetPlayerTroopCount(country);
     u16 otherTroopCount = GetNonPlayerTroopCount(country);
@@ -115,7 +138,29 @@ static void StartBattle(void)
 
 static void ReachCountry(void)
 {
+    subPhase = REPORT_PHASE_INTRO;
     StartBattle();
+}
+
+static void ShowVictoryScreen(u16 winningTeam)
+{
+    subPhase = REPORT_PHASE_VICTORY;
+    ClearScreen();
+
+    if (winningTeam)
+    {
+        consoleDrawText(0, 6, "You captured the city");
+    }
+    else
+    {
+        consoleDrawText(0, 6, "Another team captured the city");
+    }
+}
+
+static void ShowBattleRound()
+{
+    ClearScreen();
+    consoleDrawText(0, 6, "Round %d", currBattleRound);
 }
 
 static void Update(bool isTurnStarted)
@@ -124,6 +169,42 @@ static void Update(bool isTurnStarted)
 
     switch (pad0)
     {
+    case KEY_A:
+    case KEY_B:
+        if (subPhase == REPORT_PHASE_INTRO)
+        {
+            currBattleRound = 0;
+            s16 winningTeam = GetWinningTeam();
+            if (winningTeam == -1)
+            {
+                currBattleRound = 0;
+                subPhase = REPORT_PHASE_BATTLE;
+                ShowBattleRound();
+            }
+            else
+            {
+                ShowVictoryScreen((u16)winningTeam);
+            }
+        }
+        else if (subPhase == REPORT_PHASE_VICTORY)
+        {
+            AdvanceCountryCheck();
+        }
+        else if (subPhase == REPORT_PHASE_BATTLE)
+        {
+            ++currBattleRound;
+            s16 winningTeam = GetWinningTeam();
+            if (winningTeam == -1)
+            {
+                ShowBattleRound();
+            }
+            else
+            {
+                ShowVictoryScreen();
+            }
+        }
+
+        break;
     }
 }
 
