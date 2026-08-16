@@ -200,7 +200,7 @@ static void Update(bool isTurnStarted)
             }
             else
             {
-                ShowVictoryScreen();
+                ShowVictoryScreen(winningTeam);
             }
         }
 

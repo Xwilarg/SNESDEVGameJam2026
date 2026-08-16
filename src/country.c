@@ -161,7 +161,7 @@ Country countries[COUNTRY_COUNT] = {
 
 static u16 GetTroopRoll(Troop* t)
 {
-    return rand() % (2 + (t->level * 2))
+    return rand() % (2 + (t->level * 2));
 }
 
 static bool LookForTargetAndFight(Country* country, Troop* me)
