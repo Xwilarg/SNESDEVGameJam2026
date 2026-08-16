@@ -150,7 +150,7 @@ static void ShowVictoryScreen(u16 winningTeam)
     subPhase = REPORT_PHASE_VICTORY;
     ClearScreen();
 
-    if (winningTeam)
+    if (winningTeam == MY_TEAM)
     {
         consoleDrawText(0, 6, "You captured the city");
     }
