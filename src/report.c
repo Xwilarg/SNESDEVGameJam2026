@@ -11,7 +11,6 @@ static u16 checkIndex;
 // Used for battle report, to know what line to write on
 static u16 yWriteIndex;
 
-#define REPORT_PHASE_PENDING 0
 #define REPORT_PHASE_INTRO 1
 #define REPORT_PHASE_VICTORY 2
 #define REPORT_PHASE_BATTLE 3
@@ -50,10 +49,6 @@ static void AdvanceCountryCheck()
     if (!CheckToNextCountry())
     {
         Game_SwitchToModeFreeRoam();
-    }
-    else
-    {
-        subPhase = REPORT_PHASE_PENDING;
     }
 
 }
