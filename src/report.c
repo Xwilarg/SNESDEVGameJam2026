@@ -197,7 +197,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
     consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackStr, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr, defense);
     ++yWriteIndex;
 
-    if (attack > defense)
+    if (attack >= defense)
     {
         Country_RemoveExisting(country, lastIt, fightingCandidate);
         free(fightingCandidate);
@@ -235,6 +235,7 @@ static void ShowBattleRound()
             }
 
             it = it->next;
+            ++i;
         }
         
 
