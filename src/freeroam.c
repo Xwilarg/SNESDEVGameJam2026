@@ -54,6 +54,8 @@ static void Init(void)
         Country* country = &countries[i];
         country->population = country->maxPopulation;
     }
+
+    Game_UpdateCurrentCountry(Game_GetCountryIndex());
 }
 
 static void Cleanup(void)

@@ -90,7 +90,6 @@ void Game_SwitchToModeReport(void)
 void Game_Init()
 {
     Game_SwitchToModeFreeRoam();
-    Game_UpdateCurrentCountry(0);
 }
 
 void Game_Update(void)
