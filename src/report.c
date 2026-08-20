@@ -8,6 +8,9 @@
 static u16 pad0;
 static u16 checkIndex;
 
+// Current troop attacking
+static s16 troopIndex;
+
 // Used for battle report, to know what line to write on
 static u16 yWriteIndex;
 
@@ -222,8 +225,6 @@ static void ShowBattleRound()
     yWriteIndex = 8;
 
     Country* country = Game_GetCurrentCountry();
-    
-    int troopIndex = 0;
 
     while (true)
     {
@@ -235,9 +236,13 @@ static void ShowBattleRound()
             {
                 if (!LookForTargetAndFight(country, it))
                 {
+                    troopIndex = -1;
                     it = NULL; // Nobody else to fight
                 }
-                ++troopIndex;
+                else
+                {
+                    ++troopIndex;
+                }
                 break;
             }
 
@@ -253,6 +258,7 @@ static void ShowBattleRound()
 
         if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
         {
+            troopIndex = -1;
             break;
         }
     }
@@ -276,6 +282,7 @@ static void Update(bool isTurnStarted)
             {
                 currBattleRound = 0;
                 subPhase = REPORT_PHASE_BATTLE;
+                troopIndex = 0;
                 ShowBattleRound();
             }
             else
@@ -289,15 +296,22 @@ static void Update(bool isTurnStarted)
         }
         else if (subPhase == REPORT_PHASE_BATTLE)
         {
-            ++currBattleRound;
-            s16 winningTeam = GetWinningTeam();
-            if (winningTeam == -1)
+            if (troopIndex != -1)
             {
                 ShowBattleRound();
             }
             else
             {
-                ShowVictoryScreen(winningTeam);
+                ++currBattleRound;
+                s16 winningTeam = GetWinningTeam();
+                if (winningTeam == -1)
+                {
+                    ShowBattleRound();
+                }
+                else
+                {
+                    ShowVictoryScreen(winningTeam);
+            }
             }
         }
 
