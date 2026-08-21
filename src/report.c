@@ -314,11 +314,10 @@ static void Update(bool isTurnStarted)
     case KEY_B:
         if (subPhase == REPORT_PHASE_INTRO)
         {
-            currBattleRound = 1;
             s16 winningTeam = GetWinningTeam();
             if (winningTeam == -1)
             {
-                currBattleRound = 0;
+                currBattleRound = 1;
                 subPhase = REPORT_PHASE_BATTLE;
                 troopIndex = 0;
                 ShowBattleRound();
