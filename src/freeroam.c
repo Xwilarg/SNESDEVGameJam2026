@@ -226,7 +226,7 @@ char* OnMenuLabel(u16 index)
         if (menuIndex == MENU_UNASSIGNED)
         {
             if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
-            if (index == 1) return HaveAnyUpgradableAllies(country->troops) ? "Train Troop" : "No troop to train";
+            if (index == 1) return country->population > 0 && HaveAnyUpgradableAllies(country->troops) ? "Train Troop" : "No troop to train";
             if (index == 2) return HaveAnyAllies(country->troops) ? "Move Troop" : "No troop to move";
             if (index == 3) return "Pass turn";
         }
@@ -319,7 +319,7 @@ bool OnMenuSelect(u16 index)
         else if (index == 1) // Upgrade troop
         {
             bool haveAnyTroops = HaveAnyUpgradableAllies(country->troops);
-            if (!haveAnyTroops) return false;
+            if (country->population == 0 || !haveAnyTroops) return false;
 
             menuIndex = MENU_UPGRADE_TROOP;
         }
