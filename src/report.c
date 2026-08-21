@@ -216,7 +216,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
                 backlineCandidate = it;
                 backlineForce = GetForceMultiplier(me->type, it->type);
             }
-            if (it->type != BOWMAN)
+            else if (it->type != BOWMAN)
             {
                 u16 currForce = GetForceMultiplier(me->type, it->type);
                 if (frontlineCandidate == NULL || currForce > frontlineForce)
