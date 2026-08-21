@@ -247,7 +247,15 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
 
     if (attack >= defense)
     {
-        Country_RemoveExisting(country, lastIt, fightingCandidate);
+        it = country->troops;
+        while (it != NULL)
+        {
+            if (it->next == fightingCandidate) break;
+
+            it = it->next;
+        }
+
+        Country_RemoveExisting(country, it, fightingCandidate);
         consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr);
         free(fightingCandidate);
         ++yWriteIndex;
