@@ -319,9 +319,11 @@ bool OnMenuSelect(u16 index)
         else if (index == 1) // Upgrade troop
         {
             bool haveAnyTroops = HaveAnyUpgradableAllies(country->troops);
-            if (country->population == 0 || !haveAnyTroops) return false;
-
-            menuIndex = MENU_UPGRADE_TROOP;
+            if (country->population > 0 && haveAnyTroops)
+            {
+                menuIndex = MENU_UPGRADE_TROOP;
+            }
+            else return false;
         }
         else if (index == 2) // Move troop
         {
