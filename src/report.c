@@ -347,6 +347,7 @@ static void Update(bool isTurnStarted)
             }
             else
             {
+                troopIndex = 0;
                 ++currBattleRound;
                 s16 winningTeam = GetWinningTeam();
                 if (winningTeam == -1)
