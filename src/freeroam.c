@@ -119,7 +119,7 @@ u16 GetMenuItemCount()
     if (country->team == MY_TEAM)
     {
         if (menuIndex == MENU_UNASSIGNED) return 4;
-        if (menuIndex == MENU_CREATE_TROOP) return 4; // Amount of troop types + back
+        if (menuIndex == MENU_CREATE_TROOP) return 5; // Amount of troop types + back
         if (menuIndex == MENU_UPGRADE_TROOP)
         {
             Troop* it = country->troops;
@@ -235,7 +235,8 @@ char* OnMenuLabel(u16 index)
             if (index == 0) return TroopTypeToString(BOWMAN);
             if (index == 1) return TroopTypeToString(SWORDMAN);
             if (index == 2) return TroopTypeToString(SPEARMAN);
-            if (index == 3) return "Go back";
+            if (index == 3) return TroopTypeToString(HORSERIDER);
+            if (index == 4) return "Go back";
         }
         else if (menuIndex == MENU_UPGRADE_TROOP)
         {
@@ -338,12 +339,13 @@ bool OnMenuSelect(u16 index)
     }
     else if (menuIndex == MENU_CREATE_TROOP)
     {
-        if (index != 3)
+        if (index != 4)
         {
             TroopType type;
             if (index == 0) type = BOWMAN;
             else if (index == 1) type = SWORDMAN;
             else if (index == 2) type = SPEARMAN;
+            else if (index == 3) type = HORSERIDER;
 
             Country_NewTroop(country, type, MY_TEAM);
 

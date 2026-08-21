@@ -163,11 +163,11 @@ static void ShowVictoryScreen(u16 winningTeam)
     }
 }
 
-static u16 GetTroopRoll(Troop* t)
+static u16 GetTroopRoll(Troop* t, s16 fightingForce)
 {
     u16 nb = 0;
     u16 i = 0;
-    while (i < t->level)
+    while (i < t->level + fightingForce)
     {
         nb += 1 + (rand() % 4);
         ++i;
@@ -175,9 +175,35 @@ static u16 GetTroopRoll(Troop* t)
     return nb;
 }
 
+static s16 GetForceMultiplier(TroopType me, TroopType target)
+{
+    if (me == SWORDMAN)
+    {
+        if (target == HORSERIDER) return -1;
+        if (target == SPEARMAN) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    else if (me == SPEARMAN)
+    {
+        if (target == SWORDMAN) return -1;
+        if (target == HORSERIDER) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    else if (me == HORSERIDER)
+    {
+        if (target == SPEARMAN) return -1;
+        if (target == SWORDMAN) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    return 0;
+}
+
 static bool LookForTargetAndFight(Country* country, Troop* me)
 {
-    Troop* fightingCandidate = NULL;
+    Troop* backlineCandidate = NULL;
+    Troop* frontlineCandidate = NULL;
+    s16 backlineForce = 0;
+    s16 frontlineForce = 0;
 
     Troop* it = country->troops;
     Troop* lastIt = NULL;
@@ -185,22 +211,34 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
     {
         if (it->team != me->team) // it is of different team
         {
-            if (fightingCandidate == NULL)
+            if (backlineCandidate == NULL && it->type == BOWMAN)
             {
-                fightingCandidate = it;
-                break;
+                backlineCandidate = it;
+                backlineForce = GetForceMultiplier(me->type, it->type);
             }
-            // TODO: Determine target
+            if (it->type != BOWMAN)
+            {
+                u16 currForce = GetForceMultiplier(me->type, it->type);
+                if (frontlineCandidate == NULL || currForce > frontlineForce)
+                {
+                    frontlineCandidate = it;
+                    frontlineForce = currForce;
+                }
+            }
         }
 
         lastIt = it;
         it = it->next;
     }
 
-    if (fightingCandidate == NULL) return false;
+    Troop* fightingCandidate = frontlineCandidate == NULL ? backlineCandidate : frontlineCandidate;
+
+    if (frontlineCandidate == NULL) return false;
+
+    s16 fightingForce = frontlineCandidate == NULL ? backlineForce : frontlineForce;
     
-    u16 attack = GetTroopRoll(me);
-    u16 defense = GetTroopRoll(fightingCandidate);
+    u16 attack = GetTroopRoll(me, fightingForce);
+    u16 defense = GetTroopRoll(fightingCandidate, -fightingForce);
 
     char* attackStr = Troop_ToShortString(me);
     char* defenseStr = Troop_ToShortString(fightingCandidate);

@@ -9,7 +9,8 @@ typedef enum
 {
     BOWMAN,
     SWORDMAN,
-    SPEARMAN
+    SPEARMAN,
+    HORSERIDER
 } TroopType;
 
 typedef struct Troop
