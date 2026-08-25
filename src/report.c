@@ -278,6 +278,8 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
         consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
         free(fightingCandidate);
         ++yWriteIndex;
+
+        --troopIndex; // We removed an element from the list, so we decrement our check pointer as to not skip an element
     }
 
     return true;
