@@ -1,6 +1,7 @@
 #include "report.h"
 
 #include <stdlib.h>
+#include <string.h> // strcpy
 
 #include "country.h"
 #include "game.h"
@@ -240,9 +241,11 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
     u16 attack = GetTroopRoll(me, fightingForce);
     u16 defense = GetTroopRoll(fightingCandidate, -fightingForce);
 
-    char* attackStr = Troop_ToShortString(me);
-    char* defenseStr = Troop_ToShortString(fightingCandidate);
-    consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackStr, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr, defense);
+    char attackBuffer[30];
+    char defenseBuffer[30];
+    strcpy(attackBuffer, Troop_ToShortString(me));
+    strcpy(defenseBuffer, Troop_ToShortString(fightingCandidate));
+    consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackBuffer, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer, defense);
     ++yWriteIndex;
 
     if (attack >= defense)
@@ -256,7 +259,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
         }
 
         Country_RemoveExisting(country, it, fightingCandidate);
-        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseStr);
+        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
         free(fightingCandidate);
         ++yWriteIndex;
     }
@@ -337,6 +340,7 @@ static void Update(bool isTurnStarted)
         }
         else if (subPhase == REPORT_PHASE_VICTORY)
         {
+            ++checkIndex;
             AdvanceCountryCheck();
         }
         else if (subPhase == REPORT_PHASE_BATTLE)

@@ -60,6 +60,8 @@ char* TroopTypeToString(TroopType type)
     if (type == SWORDMAN) return "Swordman";
     if (type == SPEARMAN) return "Spearman";
     if (type == HORSERIDER) return "Horserider";
+
+    return "Unknown";
 }
 
 char* TroopTypeToShortString(TroopType type)
@@ -68,6 +70,8 @@ char* TroopTypeToShortString(TroopType type)
     if (type == SWORDMAN) return "SWD";
     if (type == SPEARMAN) return "SPR";
     if (type == HORSERIDER) return "HRS";
+
+    return "UKW";
 }
 
 char* Troop_ToString(Troop* t)

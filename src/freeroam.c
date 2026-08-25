@@ -395,10 +395,16 @@ bool OnMenuSelect(u16 index)
                 if (i == index)
                 {
                     moveDestination = *it;
+                    i++;
                     break;
                 }
                 i++;
                 it++;
+            }
+
+            if (i == index)
+            {
+                menuIndex = MENU_UNASSIGNED;
             }
         }
         else
