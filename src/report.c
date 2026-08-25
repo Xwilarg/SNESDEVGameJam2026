@@ -151,6 +151,9 @@ static void ReachCountry(void)
 
 static void ShowVictoryScreen(u16 winningTeam)
 {
+    Country* country = Game_GetCurrentCountry();
+    country->team = winningTeam;
+
     subPhase = REPORT_PHASE_VICTORY;
     ClearScreen();
 
@@ -164,7 +167,7 @@ static void ShowVictoryScreen(u16 winningTeam)
     }
 }
 
-static u16 GetTroopRoll(Troop* t, s16 fightingForce)
+static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
 {
     u16 nb = 0;
     u16 i = 0;
@@ -173,6 +176,13 @@ static u16 GetTroopRoll(Troop* t, s16 fightingForce)
         nb += 1 + (rand() % 4);
         ++i;
     }
+
+    if (isDefense)
+    {
+        if (currBattleRound > nb) return 0;
+        return nb - currBattleRound;
+    }
+
     return nb;
 }
 
@@ -234,12 +244,18 @@ static bool LookForTargetAndFight(Country* country, Troop* me)
 
     Troop* fightingCandidate = frontlineCandidate == NULL ? backlineCandidate : frontlineCandidate;
 
-    if (fightingCandidate == NULL) return false;
+    if (fightingCandidate == NULL)
+    {
+        char* waitBuffer = Troop_ToShortString(me);
+        consoleDrawText(0, yWriteIndex, "[%s] %s is waiting...", me->team == MY_TEAM ? "YOU" : "ENN", waitBuffer);
+        ++yWriteIndex;
+        return false;
+    }
 
     s16 fightingForce = frontlineCandidate == NULL ? backlineForce : frontlineForce;
     
-    u16 attack = GetTroopRoll(me, fightingForce);
-    u16 defense = GetTroopRoll(fightingCandidate, -fightingForce);
+    u16 attack = GetTroopRoll(me, fightingForce, false);
+    u16 defense = GetTroopRoll(fightingCandidate, -fightingForce, true);
 
     char attackBuffer[30];
     char defenseBuffer[30];
