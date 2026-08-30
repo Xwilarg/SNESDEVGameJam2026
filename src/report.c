@@ -27,7 +27,7 @@ static u16 currBattleRound;
 static void ClearScreen()
 {
     u16 y;
-    for (y = 6; y < 15; y++)
+    for (y = 6; y < MAX_BATTLE_IN_ROUND + 6; y++)
     {
         consoleDrawText(0, y, "                                                   ");
     }
