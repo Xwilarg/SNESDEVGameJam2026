@@ -33,13 +33,282 @@ static void ClearScreen()
     }
 }
 
+static u16 GetPlayerTroopCount(Country* country)
+{
+    u16 count = 0;
+
+    Troop* it = country->troops;
+    while (it != NULL)
+    {
+        if (it->team == MY_TEAM)
+        {
+            ++count;
+        }
+        it = it->next;
+    }
+    return count;
+}
+
+static s16 GetWinningTeam()
+{
+    Country* country = Game_GetCurrentCountry();
+
+    if (country->troops == NULL) return country->team;
+
+    Troop* it = country->troops;
+    u16 ref = it->team;
+
+    while (it != NULL)
+    {
+        if (it->team != ref) return -1;
+
+        it = it->next;
+    }
+
+    return (s16)ref;
+}
+
+static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
+{
+    u16 nb = 0;
+    u16 i = 0;
+    while (i < t->level + fightingForce)
+    {
+        nb += 1 + (rand() % 4);
+        ++i;
+    }
+
+    if (isDefense)
+    {
+        if (currBattleRound > nb) return 0;
+        return nb - currBattleRound;
+    }
+
+    return nb;
+}
+
+static s16 GetForceMultiplier(TroopType me, TroopType target)
+{
+    if (me == SWORDMAN)
+    {
+        if (target == HORSERIDER) return -1;
+        if (target == SPEARMAN) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    else if (me == SPEARMAN)
+    {
+        if (target == SWORDMAN) return -1;
+        if (target == HORSERIDER) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    else if (me == HORSERIDER)
+    {
+        if (target == SPEARMAN) return -1;
+        if (target == SWORDMAN) return 1;
+        if (target == BOWMAN) return 1;
+    }
+    return 0;
+}
+
+static bool LookForTargetAndFight(Country* country, Troop* me, bool printToScreen)
+{
+    Troop* backlineCandidate = NULL;
+    Troop* frontlineCandidate = NULL;
+    s16 backlineForce = 0;
+    s16 frontlineForce = 0;
+
+    Troop* it = country->troops;
+    Troop* lastIt = NULL;
+    while (it != NULL)
+    {
+        if (it->team != me->team) // it is of different team
+        {
+            if (backlineCandidate == NULL && it->type == BOWMAN)
+            {
+                backlineCandidate = it;
+                backlineForce = GetForceMultiplier(me->type, it->type);
+            }
+            else if (it->type != BOWMAN)
+            {
+                s16 currForce = GetForceMultiplier(me->type, it->type);
+                if (frontlineCandidate == NULL || currForce > frontlineForce)
+                {
+                    frontlineCandidate = it;
+                    frontlineForce = currForce;
+                }
+            }
+        }
+
+        lastIt = it;
+        it = it->next;
+    }
+
+    Troop* fightingCandidate = frontlineCandidate == NULL ? backlineCandidate : frontlineCandidate;
+
+    if (fightingCandidate == NULL)
+    {
+        if (printToScreen == true)
+        {
+            char* waitBuffer = Troop_ToShortString(me);
+            consoleDrawText(0, yWriteIndex, "[%s] %s is waiting...", me->team == MY_TEAM ? "YOU" : "ENN", waitBuffer);
+            ++yWriteIndex;
+        }
+        return false;
+    }
+
+    s16 fightingForce = frontlineCandidate == NULL ? backlineForce : frontlineForce;
+    
+    u16 attack = GetTroopRoll(me, fightingForce, false);
+    u16 defense = GetTroopRoll(fightingCandidate, -fightingForce, true);
+
+    char defenseBuffer[30];
+    if (printToScreen == true)
+    {
+        char attackBuffer[30];
+        strcpy(attackBuffer, Troop_ToShortString(me));
+        strcpy(defenseBuffer, Troop_ToShortString(fightingCandidate));
+        consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackBuffer, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer, defense);
+        ++yWriteIndex;
+    }
+
+    if (attack >= defense)
+    {
+        it = country->troops;
+        while (it != NULL)
+        {
+            if (it->next == fightingCandidate) break;
+
+            it = it->next;
+        }
+
+        if (printToScreen == true)
+        {
+            consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
+            ++yWriteIndex;
+        }
+
+        Country_RemoveExisting(country, it, fightingCandidate);
+        free(fightingCandidate);
+
+        --troopIndex; // We removed an element from the list, so we decrement our check pointer as to not skip an element
+    }
+
+    return true;
+}
+
+static void PlayBattleRoundAuto()
+{
+    s16 winningTeam;
+    Country* country = Game_GetCurrentCountry();
+    
+    do
+    {
+        u16 troopIndex = 0;
+        
+        while (true)
+        {
+            Troop* it = country->troops;
+            int i = 0;
+            while (it != NULL)
+            {
+                if (troopIndex == i)
+                {
+                    if (!LookForTargetAndFight(country, it, false))
+                    {
+                        troopIndex = -1;
+                        it = NULL; // Nobody else to fight
+                    }
+                    else
+                    {
+                        ++troopIndex;
+                    }
+                    break;
+                }
+
+                it = it->next;
+                ++i;
+            }
+
+            if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
+            {
+                troopIndex = -1;
+                break;
+            }
+        }
+
+        winningTeam = GetWinningTeam();
+        
+    } while (winningTeam == -1);    
+
+    country->team = winningTeam;
+    ++checkIndex;
+    AdvanceCountryCheck();
+}
+
+static void ShowBattleRound()
+{
+    ClearScreen();
+    consoleDrawText(0, 6, "Round %d", currBattleRound);
+    yWriteIndex = 8;
+
+    Country* country = Game_GetCurrentCountry();
+
+    while (true)
+    {
+        Troop* it = country->troops;
+        int i = 0;
+        while (it != NULL)
+        {
+            if (troopIndex == i)
+            {
+                if (!LookForTargetAndFight(country, it, true))
+                {
+                    troopIndex = -1;
+                    it = NULL; // Nobody else to fight
+                }
+                else
+                {
+                    ++troopIndex;
+                }
+                break;
+            }
+
+            it = it->next;
+            ++i;
+        }
+        
+
+        if (yWriteIndex >= MAX_BATTLE_IN_ROUND + 6) // Can't have too many people fighting in a single round
+        {
+            break;
+        }
+
+        if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
+        {
+            troopIndex = -1;
+            break;
+        }
+    }
+}
+
 static bool CheckToNextCountry()
 {
+    Country* country;
     while (checkIndex < COUNTRY_COUNT)
     {
-        if (Country_HaveConflictPending(&countries[checkIndex]))
+        country = &countries[checkIndex];
+        if (Country_HaveConflictPending(country))
         {
-            Game_UpdateCurrentCountry(checkIndex);
+            u16 playerTroopCount = GetPlayerTroopCount(country);
+
+            if (playerTroopCount == 0) // No player, auto combat
+            {
+                PlayBattleRoundAuto();
+            }
+            else
+            {
+                Game_UpdateCurrentCountry(checkIndex);
+            }
             return true;
         }
 
@@ -69,22 +338,6 @@ static void Cleanup(void)
     ClearScreen();
 }
 
-static u16 GetPlayerTroopCount(Country* country)
-{
-    u16 count = 0;
-
-    Troop* it = country->troops;
-    while (it != NULL)
-    {
-        if (it->team == MY_TEAM)
-        {
-            ++count;
-        }
-        it = it->next;
-    }
-    return count;
-}
-
 static u16 GetNonPlayerTroopCount(Country* country)
 {
     u16 count = 0;
@@ -99,25 +352,6 @@ static u16 GetNonPlayerTroopCount(Country* country)
         it = it->next;
     }
     return count;
-}
-
-static s16 GetWinningTeam()
-{
-    Country* country = Game_GetCurrentCountry();
-
-    if (country->troops == NULL) return country->team;
-
-    Troop* it = country->troops;
-    u16 ref = it->team;
-
-    while (it != NULL)
-    {
-        if (it->team != ref) return -1;
-
-        it = it->next;
-    }
-
-    return (s16)ref;
 }
 
 static void StartBattle(void)
@@ -164,170 +398,6 @@ static void ShowVictoryScreen(u16 winningTeam)
     else
     {
         consoleDrawText(0, 6, "Another team captured the city");
-    }
-}
-
-static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
-{
-    u16 nb = 0;
-    u16 i = 0;
-    while (i < t->level + fightingForce)
-    {
-        nb += 1 + (rand() % 4);
-        ++i;
-    }
-
-    if (isDefense)
-    {
-        if (currBattleRound > nb) return 0;
-        return nb - currBattleRound;
-    }
-
-    return nb;
-}
-
-static s16 GetForceMultiplier(TroopType me, TroopType target)
-{
-    if (me == SWORDMAN)
-    {
-        if (target == HORSERIDER) return -1;
-        if (target == SPEARMAN) return 1;
-        if (target == BOWMAN) return 1;
-    }
-    else if (me == SPEARMAN)
-    {
-        if (target == SWORDMAN) return -1;
-        if (target == HORSERIDER) return 1;
-        if (target == BOWMAN) return 1;
-    }
-    else if (me == HORSERIDER)
-    {
-        if (target == SPEARMAN) return -1;
-        if (target == SWORDMAN) return 1;
-        if (target == BOWMAN) return 1;
-    }
-    return 0;
-}
-
-static bool LookForTargetAndFight(Country* country, Troop* me)
-{
-    Troop* backlineCandidate = NULL;
-    Troop* frontlineCandidate = NULL;
-    s16 backlineForce = 0;
-    s16 frontlineForce = 0;
-
-    Troop* it = country->troops;
-    Troop* lastIt = NULL;
-    while (it != NULL)
-    {
-        if (it->team != me->team) // it is of different team
-        {
-            if (backlineCandidate == NULL && it->type == BOWMAN)
-            {
-                backlineCandidate = it;
-                backlineForce = GetForceMultiplier(me->type, it->type);
-            }
-            else if (it->type != BOWMAN)
-            {
-                s16 currForce = GetForceMultiplier(me->type, it->type);
-                if (frontlineCandidate == NULL || currForce > frontlineForce)
-                {
-                    frontlineCandidate = it;
-                    frontlineForce = currForce;
-                }
-            }
-        }
-
-        lastIt = it;
-        it = it->next;
-    }
-
-    Troop* fightingCandidate = frontlineCandidate == NULL ? backlineCandidate : frontlineCandidate;
-
-    if (fightingCandidate == NULL)
-    {
-        char* waitBuffer = Troop_ToShortString(me);
-        consoleDrawText(0, yWriteIndex, "[%s] %s is waiting...", me->team == MY_TEAM ? "YOU" : "ENN", waitBuffer);
-        ++yWriteIndex;
-        return false;
-    }
-
-    s16 fightingForce = frontlineCandidate == NULL ? backlineForce : frontlineForce;
-    
-    u16 attack = GetTroopRoll(me, fightingForce, false);
-    u16 defense = GetTroopRoll(fightingCandidate, -fightingForce, true);
-
-    char attackBuffer[30];
-    char defenseBuffer[30];
-    strcpy(attackBuffer, Troop_ToShortString(me));
-    strcpy(defenseBuffer, Troop_ToShortString(fightingCandidate));
-    consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackBuffer, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer, defense);
-    ++yWriteIndex;
-
-    if (attack >= defense)
-    {
-        it = country->troops;
-        while (it != NULL)
-        {
-            if (it->next == fightingCandidate) break;
-
-            it = it->next;
-        }
-
-        Country_RemoveExisting(country, it, fightingCandidate);
-        consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
-        free(fightingCandidate);
-        ++yWriteIndex;
-
-        --troopIndex; // We removed an element from the list, so we decrement our check pointer as to not skip an element
-    }
-
-    return true;
-}
-
-static void ShowBattleRound()
-{
-    ClearScreen();
-    consoleDrawText(0, 6, "Round %d", currBattleRound);
-    yWriteIndex = 8;
-
-    Country* country = Game_GetCurrentCountry();
-
-    while (true)
-    {
-        Troop* it = country->troops;
-        int i = 0;
-        while (it != NULL)
-        {
-            if (troopIndex == i)
-            {
-                if (!LookForTargetAndFight(country, it))
-                {
-                    troopIndex = -1;
-                    it = NULL; // Nobody else to fight
-                }
-                else
-                {
-                    ++troopIndex;
-                }
-                break;
-            }
-
-            it = it->next;
-            ++i;
-        }
-        
-
-        if (yWriteIndex >= MAX_BATTLE_IN_ROUND + 6) // Can't have too many people fighting in a single round
-        {
-            break;
-        }
-
-        if (it == NULL) // Everyone attacked or there is nobody else that can fight (everyone is dead)
-        {
-            troopIndex = -1;
-            break;
-        }
     }
 }
 
