@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "freeroam.h"
 #include "report.h"
+#include "gameover.h"
 
 #define SCROLL_SPEED 5
 
@@ -84,6 +85,13 @@ void Game_SwitchToModeReport(void)
 {
     if (currPhase != NULL) currPhase->cleanup();
     currPhase = Report_GetPhase();
+    currPhase->init();
+}
+
+void Game_SwitchToGameOver(void)
+{
+    if (currPhase != NULL) currPhase->cleanup();
+    currPhase = GameOver_GetPhase();
     currPhase->init();
 }
 

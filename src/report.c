@@ -430,8 +430,16 @@ static void Update(bool isTurnStarted)
         }
         else if (subPhase == REPORT_PHASE_VICTORY)
         {
-            ++checkIndex;
-            AdvanceCountryCheck();
+            s16 winningTeam = GetWinningTeam();
+            if (checkIndex == 0 && winningTeam != MY_TEAM)
+            {
+                Game_SwitchToGameOver(); // Lost player capital, game over
+            }
+            else
+            {
+                ++checkIndex;
+                AdvanceCountryCheck();
+            }
         }
         else if (subPhase == REPORT_PHASE_BATTLE)
         {
