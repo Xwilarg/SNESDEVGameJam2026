@@ -24,6 +24,8 @@ static u16 yWriteIndex;
 static u16 subPhase;
 static u16 currBattleRound;
 
+static void AdvanceCountryCheck(void);
+
 static void ClearScreen()
 {
     u16 y;
@@ -301,7 +303,7 @@ static bool CheckToNextCountry()
         {
             u16 playerTroopCount = GetPlayerTroopCount(country);
 
-            if (playerTroopCount == 0) // No player, auto combat
+            if (playerTroopCount == 0 && country->team != MY_TEAM) // No player, auto combat
             {
                 PlayBattleRoundAuto();
             }
