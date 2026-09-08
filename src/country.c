@@ -15,7 +15,7 @@ Country countries[COUNTRY_COUNT] = {
 
         MY_TEAM, // Team
 
-        (u16[]){ 1, 3, -1 }
+        (u16[]){ 1, 3, -1 } // Taureki and Eno
     },
     {
         "Taureki",
@@ -31,7 +31,7 @@ Country countries[COUNTRY_COUNT] = {
 
         1, // Team
 
-        (u16[]){ 0, 2, 3, -1 }
+        (u16[]){ 0, 2, 3, -1 } // Elanoe, Amareki and Eno
     },
     {
         "Amareki",
@@ -47,7 +47,7 @@ Country countries[COUNTRY_COUNT] = {
 
         2, // Team
 
-        (u16[]){ 1, 5, -1 }
+        (u16[]){ 1, 5, -1 } // Taureki and Strena
     },
     {
         "Eno",
@@ -63,7 +63,7 @@ Country countries[COUNTRY_COUNT] = {
 
         3, // Team
 
-        (u16[]){ 0, 1, 9, -1 }
+        (u16[]){ 0, 1, 9, -1 } // Taureki and Boet
     },
     {
         "Bretna",
@@ -79,7 +79,7 @@ Country countries[COUNTRY_COUNT] = {
 
         4, // Team
 
-        (u16[]){ 5, 6, -1 }
+        (u16[]){ 5, 6, -1 } // Strena and East Brina
     },
     {
         "Strena",
@@ -95,7 +95,7 @@ Country countries[COUNTRY_COUNT] = {
 
         5, // Team
 
-        (u16[]){ 2, 4, -1 }
+        (u16[]){ 2, 4, -1 } // Amareki and Bretna
     },
     {
         "East Brina",
@@ -111,7 +111,7 @@ Country countries[COUNTRY_COUNT] = {
 
         6, // Team
 
-        (u16[]){ 4, 7, -1 }
+        (u16[]){ 4, 7, -1 } // Bretna and Republic of Brina
     },
     {
         "Republic of Brina",
@@ -127,7 +127,7 @@ Country countries[COUNTRY_COUNT] = {
 
         7, // Team
 
-        (u16[]){ 6, 8, -1 }
+        (u16[]){ 6, 8, -1 } // East Brina and Larti
     },
     {
         "Larti",
@@ -143,7 +143,7 @@ Country countries[COUNTRY_COUNT] = {
 
         8, // Team
 
-        (u16[]){ 7, 9, 10, -1 }
+        (u16[]){ 7, 9, 10, -1 } // Republic of Brina, Boet and Seranegao 
     },
     {
         "Boet",
@@ -159,7 +159,7 @@ Country countries[COUNTRY_COUNT] = {
 
         9, // Team
 
-        (u16[]){ 3, 8, -1 }
+        (u16[]){ 3, 8, 10, -1 } // Larti, Eno and Seranegao
     },
     {
         "Seranegao",
@@ -175,7 +175,7 @@ Country countries[COUNTRY_COUNT] = {
 
         10, // Team
 
-        (u16[]){ 8, -1 }
+        (u16[]){ 8, 9, -1 } // Larti and Boet
     }
 };
 
