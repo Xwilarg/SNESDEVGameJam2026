@@ -195,25 +195,6 @@ bool Country_HaveConflictPending(Country* country)
     return false;
 }
 
-void Country_ResolveAITurn(Country* country)
-{
-    u16 spawnCount = 0;
-    while (country->population > 0)
-    {
-        Troop* t = Country_NewTroop(country, MERCENARY, country->team);
-
-        ++spawnCount;
-        if (spawnCount % 2 == 1)
-        {
-            // Move troop
-            Country_RemoveExisting(country, NULL, t);
-            Country_AddExisting(&countries[country->nearbyCountries[0]], t);
-        }
-
-        --country->population;
-    }
-}
-
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team)
 {
     Troop* troop = Troop_New(troopType, team);

@@ -29,6 +29,5 @@ void Country_RemoveExisting(Country* country, Troop* last, Troop* t);
 void Country_AddExisting(Country* country, Troop *t);
 bool Country_HaveConflictPending(Country* country);
 void Country_ResolveBattle(Country* country);
-void Country_ResolveAITurn(Country* country);
 
 #endif

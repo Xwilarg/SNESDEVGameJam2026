@@ -7,6 +7,7 @@
 #include "game.h"
 #include "country.h"
 #include "menu.h"
+#include "ai.h"
 
 #define MENU_UNASSIGNED 0
 #define MENU_CREATE_TROOP 1
@@ -66,7 +67,7 @@ static void Cleanup(void)
         Country* country = &countries[i];
         if (country->team != MY_TEAM)
         {
-            Country_ResolveAITurn(country);
+            AI_ResolveTurn(country);
         }
     }
 
