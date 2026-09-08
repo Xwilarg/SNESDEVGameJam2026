@@ -74,7 +74,7 @@ static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
 {
     u16 nb = 0;
     u16 i = 0;
-    while (i < t->level + fightingForce)
+    while (i < (t->level + 1) + fightingForce)
     {
         nb += 1 + (rand() % 4);
         ++i;
@@ -172,7 +172,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me, bool printToScree
         char attackBuffer[30];
         strcpy(attackBuffer, Troop_ToShortString(me));
         strcpy(defenseBuffer, Troop_ToShortString(fightingCandidate));
-        consoleDrawText(0, yWriteIndex, "[%s] %s (%d) vs [%s] %s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackBuffer, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer, defense);
+        consoleDrawText(0, yWriteIndex, "[%s]%s (%d) vs [%s]%s (%d)", me->team == MY_TEAM ? "YOU" : "ENN", attackBuffer, attack, fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer, defense);
         ++yWriteIndex;
     }
 
@@ -188,7 +188,7 @@ static bool LookForTargetAndFight(Country* country, Troop* me, bool printToScree
 
         if (printToScreen == true)
         {
-            consoleDrawText(0, yWriteIndex, "[%s] %s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
+            consoleDrawText(0, yWriteIndex, "[%s]%s is dead", fightingCandidate->team == MY_TEAM ? "YOU" : "ENN", defenseBuffer);
             ++yWriteIndex;
         }
 
