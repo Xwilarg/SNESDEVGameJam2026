@@ -19,6 +19,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Taureki",
+
+        // X,Y
         76,
         286,
 
@@ -33,6 +35,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Amareki",
+
+        // X,Y
         256,
         286,
 
@@ -47,6 +51,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Eno",
+
+        // X,Y
         0,
         184,
 
@@ -61,6 +67,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Bretna",
+
+        // X,Y
         198,
         188,
 
@@ -75,6 +83,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Strena",
+
+        // X,Y
         256,
         226,
 
@@ -89,6 +99,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "East Brina",
+
+        // X,Y
         256,
         50,
 
@@ -103,6 +115,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Republic of Brina",
+
+        // X,Y
         186,
         36,
 
@@ -117,6 +131,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Larti",
+
+        // X,Y
         39,
         30,
 
@@ -131,6 +147,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Boet",
+
+        // X,Y
         5,
         90,
 
@@ -145,6 +163,8 @@ Country countries[COUNTRY_COUNT] = {
     },
     {
         "Seranegao",
+
+        // X,Y
         0,
         0,
 
