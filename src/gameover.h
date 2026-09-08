@@ -5,4 +5,4 @@
 
 Phase* GameOver_GetPhase();
 
-#endif GAMEOVER_H
+#endif
