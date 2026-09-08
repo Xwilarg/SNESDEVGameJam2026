@@ -180,7 +180,7 @@ void Country_ResolveAITurn(Country* country)
     u16 spawnCount = 0;
     while (country->population > 0)
     {
-        Troop* t = Country_NewTroop(country, SWORDMAN, country->team);
+        Troop* t = Country_NewTroop(country, MERCENARY, country->team);
 
         ++spawnCount;
         if (spawnCount % 2 == 1)

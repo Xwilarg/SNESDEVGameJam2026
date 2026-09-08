@@ -10,7 +10,8 @@ typedef enum
     BOWMAN,
     SWORDMAN,
     SPEARMAN,
-    HORSERIDER
+    HORSERIDER,
+    MERCENARY
 } TroopType;
 
 typedef struct Troop

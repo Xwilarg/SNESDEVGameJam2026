@@ -91,6 +91,9 @@ static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
 
 static s16 GetForceMultiplier(TroopType me, TroopType target)
 {
+    if (me == MERCENARY) return -1;
+    if (target == MERCENARY) return 1;
+
     if (me == SWORDMAN)
     {
         if (target == HORSERIDER) return -1;
