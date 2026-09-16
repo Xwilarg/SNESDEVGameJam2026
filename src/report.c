@@ -91,9 +91,11 @@ static u16 GetTroopRoll(Troop* t, s16 fightingForce, bool isDefense)
 
 static s16 GetForceMultiplier(TroopType me, TroopType target)
 {
-    if (me == MERCENARY) return -1;
-    if (target == MERCENARY) return 1;
+    // Militia suck
+    if (me == MILITIA) return -1;
+    if (target == MILITIA) return 1;
 
+    // Weapon triangle
     if (me == SWORDMAN)
     {
         if (target == HORSERIDER) return -1;
@@ -110,6 +112,13 @@ static s16 GetForceMultiplier(TroopType me, TroopType target)
     {
         if (target == SPEARMAN) return -1;
         if (target == SWORDMAN) return 1;
+        if (target == BOWMAN) return 1;
+    }
+
+    // Guardian are like swordman without horserider weakness
+    if (me == GUARDIAN)
+    {
+        if (target == SPEARMAN) return 1;
         if (target == BOWMAN) return 1;
     }
     return 0;

@@ -18,12 +18,15 @@ typedef struct
     u16 maxPopulation;
     u16 population;
 
+    u16 originalTeam;
     u16 team;
     u16* nearbyCountries;
 } Country;
 
 extern Country countries[COUNTRY_COUNT];
 
+void Country_ClearDescription(void);
+void Country_WriteDescription(int countryIndex);
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team);
 void Country_RemoveExisting(Country* country, Troop* last, Troop* t);
 void Country_AddExisting(Country* country, Troop *t);

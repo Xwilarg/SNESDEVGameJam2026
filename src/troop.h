@@ -11,7 +11,8 @@ typedef enum
     SWORDMAN,
     SPEARMAN,
     HORSERIDER,
-    MERCENARY
+    MILITIA,
+    GUARDIAN
 } TroopType;
 
 typedef struct Troop

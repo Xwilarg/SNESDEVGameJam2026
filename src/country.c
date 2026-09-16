@@ -13,6 +13,7 @@ Country countries[COUNTRY_COUNT] = {
         3, // Population
         3,
 
+        MY_TEAM,
         MY_TEAM, // Team
 
         (u16[]){ 1, 3, -1 } // Taureki and Eno
@@ -29,6 +30,7 @@ Country countries[COUNTRY_COUNT] = {
         4, // Population
         4,
 
+        1,
         1, // Team
 
         (u16[]){ 0, 2, 3, -1 } // Elanoe, Amareki and Eno
@@ -45,6 +47,7 @@ Country countries[COUNTRY_COUNT] = {
         4, // Population
         4,
 
+        2,
         2, // Team
 
         (u16[]){ 1, 5, -1 } // Taureki and Strena
@@ -61,6 +64,7 @@ Country countries[COUNTRY_COUNT] = {
         4, // Population
         4,
 
+        3,
         3, // Team
 
         (u16[]){ 0, 1, 9, -1 } // Taureki and Boet
@@ -77,6 +81,7 @@ Country countries[COUNTRY_COUNT] = {
         2, // Population
         2,
 
+        4,
         4, // Team
 
         (u16[]){ 5, 6, -1 } // Strena and East Brina
@@ -93,6 +98,7 @@ Country countries[COUNTRY_COUNT] = {
         2, // Population
         2,
 
+        5,
         5, // Team
 
         (u16[]){ 2, 4, -1 } // Amareki and Bretna
@@ -109,6 +115,7 @@ Country countries[COUNTRY_COUNT] = {
         3, // Population
         3,
 
+        6,
         6, // Team
 
         (u16[]){ 4, 7, -1 } // Bretna and Republic of Brina
@@ -125,6 +132,7 @@ Country countries[COUNTRY_COUNT] = {
         3, // Population
         3,
 
+        7,
         7, // Team
 
         (u16[]){ 6, 8, -1 } // East Brina and Larti
@@ -141,6 +149,7 @@ Country countries[COUNTRY_COUNT] = {
         7, // Population
         7,
 
+        8,
         8, // Team
 
         (u16[]){ 7, 9, 10, -1 } // Republic of Brina, Boet and Seranegao 
@@ -157,6 +166,7 @@ Country countries[COUNTRY_COUNT] = {
         1, // Population
         1,
 
+        9,
         9, // Team
 
         (u16[]){ 3, 8, 10, -1 } // Larti, Eno and Seranegao
@@ -173,11 +183,65 @@ Country countries[COUNTRY_COUNT] = {
         3, // Population
         3,
 
+        10,
         10, // Team
 
         (u16[]){ 8, 9, -1 } // Larti and Boet
     }
 };
+
+void Country_ClearDescription(void)
+{
+    consoleDrawText(0, 4, "                                ");
+    consoleDrawText(0, 5, "                                ");
+    consoleDrawText(0, 6, "                                ");
+    consoleDrawText(0, 7, "                                ");
+    consoleDrawText(0, 8, "                                ");
+    consoleDrawText(0, 9, "                                ");
+    consoleDrawText(0, 10, "                                ");
+    consoleDrawText(0, 11, "                                ");
+    consoleDrawText(0, 12, "                                ");
+    consoleDrawText(0, 13, "                                ");
+}
+
+void Country_WriteDescription(int countryIndex)
+{
+    if (countryIndex == 1) // Taureki
+    {
+        consoleDrawText(0, 4, "After the great war, Taureki");
+        consoleDrawText(0, 5, "army was left in a very poor");
+        consoleDrawText(0, 6, "state. The king urgently started");
+        consoleDrawText(0, 7, "to recruit peasants to build");
+        consoleDrawText(0, 8, "back a semblance of an army");
+    }
+    else if (countryIndex == 2) // Amareki
+    {
+        consoleDrawText(0, 4, "Amareki carved its way in");
+        consoleDrawText(0, 5, "history thanks to its");
+        consoleDrawText(0, 6, "mastership of the forge");
+        consoleDrawText(0, 7, "and ability to make very");
+        consoleDrawText(0, 8, "high quality swords.");
+        consoleDrawText(0, 9, "They train elite units");
+        consoleDrawText(0, 10, "named guardians that are");
+        consoleDrawText(0, 11, "said to use the sword");
+        consoleDrawText(0, 12, "expertly and have no");
+        consoleDrawText(0, 13, "weakness");
+    }
+    else if (countryIndex == 3) // Eno
+    {
+        consoleDrawText(0, 4, "Eno always privileged");
+        consoleDrawText(0, 5, "discipline, which reflect");
+        consoleDrawText(0, 6, "in its army. The use of spear");
+        consoleDrawText(0, 7, "is heavily dominant and");
+        consoleDrawText(0, 8, "formations are driven by");
+        consoleDrawText(0, 9, "infantry sqyares");
+    }
+    else
+    {
+        consoleDrawText(0, 4, "No information is known about");
+        consoleDrawText(0, 5, "this country so far...");
+    }
+}
 
 bool Country_HaveConflictPending(Country* country)
 {

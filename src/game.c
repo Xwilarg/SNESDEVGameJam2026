@@ -37,13 +37,15 @@ void Game_UpdateCountryLabel()
 {
     Country* country = Game_GetCurrentCountry();
 
-    if (countryIndex != 0 && country->team == MY_TEAM)
+    if (countryIndex != 0 && country->team != country->originalTeam)
     {
-        consoleDrawText(0, 0, "%s (%d) [CONQUERED]           ", country->name, country->population);
+        consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
+        consoleDrawText(0, 1, "[conquered by %s]               ", countries[country->originalTeam].name);
     }
     else
     {
         consoleDrawText(0, 0, "%s (%d)                       ", country->name, country->population);
+        consoleDrawText(0, 1, "                                       ", country->name, country->population);
     }
     consoleDrawText(22, 27, "Turn: %d   ", turn);
 

@@ -76,7 +76,18 @@ static void Cleanup(void)
 
 static void ReachCountry(void)
 {
-    Menu_Draw(&menu);
+    Country* country = Game_GetCurrentCountry();
+
+    Country_ClearDescription();
+    if (country->team != MY_TEAM)
+    {
+        Menu_Clear();
+        Country_WriteDescription(country->team);
+    }
+    else
+    {
+        Menu_Draw(&menu);
+    }
 }
 
 static void Update(bool isTurnStarted)
@@ -301,8 +312,6 @@ char* OnMenuLabel(u16 index)
         }
         return NULL;
     }
-
-    if (index == 0) return "Make alliance";
     return NULL;
 }
 
