@@ -95,6 +95,21 @@ static s16 GetForceMultiplier(TroopType me, TroopType target)
     if (me == MILITIA) return -1;
     if (target == MILITIA) return 1;
 
+    // Guardian don't have weakness, but not much force either
+    if (me == GUARDIAN)
+    {
+        if (target == BOWMAN) return 1;
+    }
+    if (target == GUARDIAN) return 0;
+
+    // Crossbowman are very strong distance unit, but very weak against close contact ones
+    if (me == CROSSBOWMAN) return 1;
+    if (target == CROSSBOWMAN)
+    {
+        if (me == BOWMAN || me == CROSSBOWMAN) return 0;
+        return 1;
+    }
+
     // Weapon triangle
     if (me == SWORDMAN)
     {
@@ -112,13 +127,6 @@ static s16 GetForceMultiplier(TroopType me, TroopType target)
     {
         if (target == SPEARMAN) return -1;
         if (target == SWORDMAN) return 1;
-        if (target == BOWMAN) return 1;
-    }
-
-    // Guardian are like swordman without horserider weakness
-    if (me == GUARDIAN)
-    {
-        if (target == SPEARMAN) return 1;
         if (target == BOWMAN) return 1;
     }
     return 0;

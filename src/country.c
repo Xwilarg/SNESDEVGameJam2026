@@ -234,7 +234,24 @@ void Country_WriteDescription(int countryIndex)
         consoleDrawText(0, 6, "in its army. The use of spear");
         consoleDrawText(0, 7, "is heavily dominant and");
         consoleDrawText(0, 8, "formations are driven by");
-        consoleDrawText(0, 9, "infantry sqyares");
+        consoleDrawText(0, 9, "infantry squares");
+    }
+    else if (countryIndex == 4) // Bretna
+    {
+        // Expertise of the bow but mostly defense
+    }
+    else if (countryIndex == 5) // Strena
+    {
+        consoleDrawText(0, 4, "Strena compensate its lack");
+        consoleDrawText(0, 5, "of land by an expertise of");
+        consoleDrawText(0, 6, "the bow");
+    }
+    else if (countryIndex == 9) // Boet
+    {
+        consoleDrawText(0, 4, "Boet is an old colony of Eno,");
+        consoleDrawText(0, 5, "keeping their martiality they");
+        consoleDrawText(0, 6, "also integrated the use of");
+        consoleDrawText(0, 7, "the bow as support");
     }
     else
     {

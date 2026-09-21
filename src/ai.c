@@ -39,6 +39,21 @@ void AI_ResolveTurn(Country* country)
             Troop* t = Country_NewTroop(country, SPEARMAN, country->team);
             if (rand() % 3 == 1) MoveTroop(country, t);
         }
+        else if (country->team == 4) // Bretna
+        {
+            Troop* t = Country_NewTroop(country, spawnCount == 0 ? SWORDMAN : BOWMAN, country->team);
+            if (rand() % 5 == 1) MoveTroop(country, t);
+        }
+        else if (country->team == 5) // Strena
+        {
+            Troop* t = Country_NewTroop(country, spawnCount == 0 ? BOWMAN : rand() % 2 == 1 ? MILITIA : BOWMAN, country->team);
+            if (rand() % 3 == 1) MoveTroop(country, t);
+        }
+        else if (country->team == 9) // Boet
+        {
+            Troop* t = Country_NewTroop(country, rand() % 3 == 1 ? SPEARMAN : BOWMAN, country->team);
+            if (rand() % 3 == 1) MoveTroop(country, t);
+        }
 
         ++spawnCount;
         --country->population;
