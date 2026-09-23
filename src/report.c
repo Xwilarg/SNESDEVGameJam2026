@@ -95,6 +95,10 @@ static s16 GetForceMultiplier(TroopType me, TroopType target)
     if (me == MILITIA) return -1;
     if (target == MILITIA) return 1;
 
+    // Champions are the best units
+    if (me == CHAMPION) return 1;
+    if (target == CHAMPION) return -1;
+
     // Guardian don't have weakness, but not much force either
     if (me == GUARDIAN)
     {

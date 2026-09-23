@@ -63,6 +63,7 @@ char* TroopTypeToString(TroopType type)
     if (type == MILITIA) return "Militia";
     if (type == GUARDIAN) return "Guardian";
     if (type == CROSSBOWMAN) return "Crossbowman";
+    if (type == CHAMPION) return "Champion";
 
     return "Unknown";
 }
@@ -76,6 +77,7 @@ char* TroopTypeToShortString(TroopType type)
     if (type == MILITIA) return "MLA";
     if (type == GUARDIAN) return "GUA";
     if (type == CROSSBOWMAN) return "CRW";
+    if (type == CHAMPION) return "CHA";
 
     return "UKW";
 }
