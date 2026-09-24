@@ -17,10 +17,23 @@ static void MoveTroop(Country* country, Troop* t)
 {
     Country_RemoveExisting(country, NULL, t);
     Country_AddExisting(GetRandomTarget(country), t);
+    t->wasMoved = true;
 }
 
 void AI_ResolveTurn(Country* country)
 {
+    // TODO: move existing troops
+    Troop* t = country->troops;
+    while (t != NULL)
+    {
+        if (t->wasMoved == false && t->team != MY_TEAM)
+        {
+            // TODO: move
+            t->wasMoved = true;
+        }
+        t = t->next;
+    }
+
     u16 spawnCount = 0;
     while (country->population > 0)
     {

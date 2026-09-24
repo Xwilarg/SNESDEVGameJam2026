@@ -24,6 +24,7 @@ typedef struct Troop
     int team;
     u16 level;
     TroopType type;
+    bool wasMoved;
 } Troop;
 
 Troop* Troop_New(TroopType type, int team);

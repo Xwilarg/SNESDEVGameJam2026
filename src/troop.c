@@ -15,6 +15,7 @@ Troop* Troop_New(TroopType type, int team)
     troop->level = 1;
     troop->type = type;
     troop->team = team;
+    troop->wasMoved = false;
 
     return troop;
 }

@@ -70,6 +70,19 @@ static void Cleanup(void)
             AI_ResolveTurn(country);
         }
     }
+    
+    // Reset move info for all troops
+    for (i = 0; i < COUNTRY_COUNT; i++)
+    {
+        Country* country = &countries[i];
+        Troop* t = country->troops;
+
+        if (t != NULL)
+        {
+            t->wasMoved = false;
+            t = t->next;
+        }
+    }
 
     Menu_Clear();
 }
@@ -295,7 +308,7 @@ char* OnMenuLabel(u16 index)
                 int i = 0;
                 while (it != NULL)
                 {
-                    if (it->team == MY_TEAM)
+                    if (it->team == MY_TEAM && it->wasMoved == false)
                     {
                         if (i == index)
                         {
@@ -376,7 +389,7 @@ bool OnMenuSelect(u16 index)
         int i = 0;
         while (it != NULL)
         {
-            if (it->team == MY_TEAM && CanBeUpgrade(it))
+            if (it->team == MY_TEAM && CanBeUpgrade(it) && it->wasMoved == false)
             {
                 if (i == index)
                 {
