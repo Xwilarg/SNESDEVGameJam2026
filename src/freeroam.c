@@ -185,7 +185,7 @@ u16 GetMenuItemCount()
                 int i = 0;
                 while (it != NULL)
                 {
-                    if (it->team == MY_TEAM)
+                    if (it->team == MY_TEAM && it->wasMoved == false)
                     {
                         i++;
                     }
@@ -389,7 +389,7 @@ bool OnMenuSelect(u16 index)
         int i = 0;
         while (it != NULL)
         {
-            if (it->team == MY_TEAM && CanBeUpgrade(it) && it->wasMoved == false)
+            if (it->team == MY_TEAM && CanBeUpgrade(it))
             {
                 if (i == index)
                 {
@@ -438,7 +438,7 @@ bool OnMenuSelect(u16 index)
             int i = 0;
             while (it != NULL && i < MENU_MAX_CHOICE_COUNT)
             {
-                if (it->team == MY_TEAM)
+                if (it->team == MY_TEAM && it->wasMoved == false)
                 {
                     if (i == index)
                     {
