@@ -40,7 +40,7 @@ void Game_UpdateCountryLabel()
     if (countryIndex != 0 && country->team != country->originalTeam)
     {
         consoleDrawText(0, 0, "%s (%d)                   ", country->name, country->population);
-        consoleDrawText(0, 1, "[conquered by %s]               ", countries[country->originalTeam].name);
+        consoleDrawText(0, 1, "[conquered by %s]               ", countries[country->team].name);
     }
     else
     {
