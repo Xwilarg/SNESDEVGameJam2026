@@ -77,7 +77,7 @@ static void Cleanup(void)
         Country* country = &countries[i];
         Troop* t = country->troops;
 
-        if (t != NULL)
+        while (t != NULL)
         {
             t->wasMoved = false;
             t = t->next;
@@ -110,14 +110,14 @@ static void Update(bool isTurnStarted)
     switch (pad0)
     {
     case KEY_LEFT:
-        if (!isTurnStarted)
+        //if (!isTurnStarted)
         {
             menuIndex = MENU_UNASSIGNED;
             Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() - 1, 0, COUNTRY_COUNT - 1));
         }
         break;
     case KEY_RIGHT:
-        if (!isTurnStarted)
+        //if (!isTurnStarted)
         {
             menuIndex = MENU_UNASSIGNED;
             Game_UpdateCurrentCountry(Wrap(Game_GetCountryIndex() + 1, 0, COUNTRY_COUNT - 1));
@@ -449,6 +449,8 @@ bool OnMenuSelect(u16 index)
 
                         // ...and add it to the destination one
                         Country_AddExisting(dest, it);
+                        it->wasMoved = true;
+
                         Game_StartTurn();
 
                         return true;
