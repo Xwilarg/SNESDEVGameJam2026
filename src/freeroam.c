@@ -124,8 +124,24 @@ static void Update(bool isTurnStarted)
         }
         break;
 
+    case KEY_SELECT:
+        {
+            u16 i;
+            for (i = 0; i < COUNTRY_COUNT; i++)
+            {
+                Country* country = &countries[i];
+                if (country->team == MY_TEAM && country->population > 0)
+                {
+                    menuIndex = MENU_UNASSIGNED;
+                    Game_UpdateCurrentCountry(i);
+                    break;
+                }
+            }
+        }
+        break;
+
     default:
-        Menu_Input(&menu, pad0);
+        if (Game_GetCurrentCountry()->team == MY_TEAM) Menu_Input(&menu, pad0);
         break;
     }
 }
