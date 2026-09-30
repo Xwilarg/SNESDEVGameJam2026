@@ -160,13 +160,19 @@ u16 GetMenuItemCount()
     if (country->team == MY_TEAM)
     {
         if (menuIndex == MENU_UNASSIGNED) return 4;
-        if (menuIndex == MENU_CREATE_TROOP) return 5; // Amount of troop types + back
+        if (menuIndex == MENU_CREATE_TROOP)
+        {
+            u16 i;
+            for (i = 0; country->units[i] != -1; i++)
+            { }
+            return i + 1;
+        }
         if (menuIndex == MENU_UPGRADE_TROOP)
         {
             Troop* it = country->troops;
 
             // Number of choices is amount of troops that are ours and not level max
-            int i = 0;
+            u16 i = 0;
             while (it != NULL)
             {
                 if (it->team == MY_TEAM && CanBeUpgrade(it))
@@ -185,7 +191,7 @@ u16 GetMenuItemCount()
                 u16* it = country->nearbyCountries;
 
                 // Amount of adjacent countries + back
-                int i = 0;
+                u16 i = 0;
                 while (*it != -1)
                 {
                     it++;
@@ -198,7 +204,7 @@ u16 GetMenuItemCount()
                 Troop* it = country->troops;
 
                 // Troops + back
-                int i = 0;
+                u16 i = 0;
                 while (it != NULL)
                 {
                     if (it->team == MY_TEAM && it->wasMoved == false)
@@ -241,7 +247,7 @@ char* OnMenuTitle()
         return "UNKNOWN";
     }
 
-    return "Diplomacy Options";
+    return "UNKNOWN";
 }
 
 void OnMenuReset()
@@ -273,11 +279,12 @@ char* OnMenuLabel(u16 index)
         }
         else if (menuIndex == MENU_CREATE_TROOP)
         {
-            if (index == 0) return TroopTypeToString(BOWMAN);
-            if (index == 1) return TroopTypeToString(SWORDMAN);
-            if (index == 2) return TroopTypeToString(SPEARMAN);
-            if (index == 3) return TroopTypeToString(HORSERIDER);
-            if (index == 4) return "Go back";
+            u16 i;
+            for (i = 0; country->units[i] != -1; i++)
+            {
+                if (i == index) return TroopTypeToString(country->units[i]);
+            }
+            return "Back";
         }
         else if (menuIndex == MENU_UPGRADE_TROOP)
         {
@@ -380,20 +387,19 @@ bool OnMenuSelect(u16 index)
     }
     else if (menuIndex == MENU_CREATE_TROOP)
     {
-        if (index != 4)
+        u16 i;
+        for (i = 0; country->units[i] != -1; i++)
         {
-            TroopType type;
-            if (index == 0) type = BOWMAN;
-            else if (index == 1) type = SWORDMAN;
-            else if (index == 2) type = SPEARMAN;
-            else if (index == 3) type = HORSERIDER;
+            if (i == index)
+            {
+                Country_NewTroop(country, country->units[i], MY_TEAM);
 
-            Country_NewTroop(country, type, MY_TEAM);
+                --country->population;
+                Game_UpdateCountryLabel();
 
-            --country->population;
-            Game_UpdateCountryLabel();
-
-            Game_StartTurn();
+                Game_StartTurn();
+                break;
+            }
         }
 
         menuIndex = MENU_UNASSIGNED;
