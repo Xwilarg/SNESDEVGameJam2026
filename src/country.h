@@ -21,6 +21,8 @@ typedef struct
     u16 originalTeam;
     u16 team;
     u16* nearbyCountries;
+
+    u16* units;
 } Country;
 
 extern Country countries[COUNTRY_COUNT];
