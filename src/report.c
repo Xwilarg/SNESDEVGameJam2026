@@ -362,6 +362,23 @@ static void Cleanup(void)
 {
     consoleDrawText(0, 4, "                                                   ");
     ClearScreen();
+
+    bool didWin = true;
+    u16 i;
+    for (i = 0; i < COUNTRY_COUNT; i++)
+    {
+        Country* c = &countries[i];
+        if (c->team != MY_TEAM)
+        {
+            didWin = false;
+            break;
+        }
+    }
+
+    if (didWin == true)
+    {
+        Game_SwitchToVictory();
+    }
 }
 
 static u16 GetNonPlayerTroopCount(Country* country)

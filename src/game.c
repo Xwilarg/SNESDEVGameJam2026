@@ -98,6 +98,13 @@ void Game_SwitchToGameOver(void)
     currPhase->init();
 }
 
+void Game_SwitchToVictory(void)
+{
+    if (currPhase != NULL) currPhase->cleanup();
+    currPhase = Victory_GetPhase();
+    currPhase->init();
+}
+
 void Game_SwitchToIntro(void)
 {
     if (currPhase != NULL) currPhase->cleanup();

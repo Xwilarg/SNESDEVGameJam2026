@@ -15,6 +15,7 @@ void Game_UpdateCountryLabel(void);
 void Game_SwitchToModeFreeRoam(void);
 void Game_SwitchToModeReport(void);
 void Game_SwitchToGameOver(void);
+void Game_SwitchToVictory(void);
 void Game_SwitchToIntro(void);
 
 #endif
