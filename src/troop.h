@@ -4,6 +4,7 @@
 #include <snes.h>
 
 #define MY_TEAM 0
+#define MAX_TROOP_COUNTRY 8
 
 typedef enum
 {

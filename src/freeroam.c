@@ -284,7 +284,15 @@ char* OnMenuLabel(u16 index)
     {
         if (menuIndex == MENU_UNASSIGNED)
         {
-            if (index == 0) return country->population > 0 ? "New Troop" : "No population to make troops";
+            if (index == 0)
+            {
+                if (country->population > 0)
+                {
+                    if (Country_GetArmyCount(country, MY_TEAM) >= MAX_TROOP_COUNTRY) return "Too many troop stationned";
+                    return "New Troop";
+                }
+                return "No population to make troops";
+            }
             if (index == 1) return country->population > 0 && HaveAnyUpgradableAllies(country->troops) ? "Train Troop" : "No troop to train";
             if (index == 2) return HaveAnyAllies(country->troops) ? "Move Troop" : "No troop to move";
             if (index == 3) return "Pass turn";
@@ -372,6 +380,7 @@ bool OnMenuSelect(u16 index)
         if (index == 0) // Create troop
         {
             if (country->population == 0) return false;
+            if (Country_GetArmyCount(country, MY_TEAM) >= MAX_TROOP_COUNTRY) return false;
             menuIndex = MENU_CREATE_TROOP;
         }
         else if (index == 1) // Upgrade troop

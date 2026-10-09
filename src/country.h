@@ -27,6 +27,7 @@ typedef struct
 
 extern Country countries[COUNTRY_COUNT];
 
+u16 Country_GetArmyCount(Country* country, u16 team);
 void Country_ClearDescription(void);
 void Country_WriteDescription(int countryIndex);
 Troop* Country_NewTroop(Country* country, TroopType troopType, int team);

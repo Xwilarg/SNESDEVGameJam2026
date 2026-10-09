@@ -40,27 +40,27 @@ void AI_ResolveTurn(Country* country)
         if (country->team == 1) // Taureki
         {
             Troop* t = Country_NewTroop(country, MILITIA, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 2) // Amareki
         {
             Troop* t = Country_NewTroop(country, rand() % 4 == 1 ? GUARDIAN : SWORDMAN, country->team);
-            if (rand() % 5 == 1) MoveTroop(country, t);
+            if (rand() % 5 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 3) // Eno
         {
             Troop* t = Country_NewTroop(country, SPEARMAN, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 4) // Bretna
         {
             Troop* t = Country_NewTroop(country, spawnCount == 0 ? SWORDMAN : BOWMAN, country->team);
-            if (rand() % 5 == 1) MoveTroop(country, t);
+            if (rand() % 5 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 5) // Strena
         {
             Troop* t = Country_NewTroop(country, spawnCount == 0 ? BOWMAN : rand() % 2 == 1 ? MILITIA : BOWMAN, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 6 ) // East Brina
         {
@@ -71,7 +71,7 @@ void AI_ResolveTurn(Country* country)
             else troop = CROSSBOWMAN;
 
             Troop* t = Country_NewTroop(country, troop, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 7) // Republic of Brina
         {
@@ -82,22 +82,22 @@ void AI_ResolveTurn(Country* country)
             else troop = BOWMAN;
 
             Troop* t = Country_NewTroop(country, troop, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 8) // Larti
         {
             Troop* t = Country_NewTroop(country, spawnCount == 0 ? CHAMPION : rand() % 2 == 1 ? MILITIA : SWORDMAN, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 9) // Boet
         {
             Troop* t = Country_NewTroop(country, rand() % 3 == 1 ? SPEARMAN : BOWMAN, country->team);
-            if (rand() % 3 == 1) MoveTroop(country, t);
+            if (rand() % 3 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
         else if (country->team == 10) // Seranegao
         {
             Troop* t = Country_NewTroop(country, HORSERIDER, country->team);
-            if (rand() % 2 == 1) MoveTroop(country, t);
+            if (rand() % 2 == 1 || Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY) MoveTroop(country, t);
         }
 
         ++spawnCount;

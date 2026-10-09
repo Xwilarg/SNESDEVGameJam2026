@@ -201,6 +201,18 @@ Country countries[COUNTRY_COUNT] = {
     }
 };
 
+u16 Country_GetArmyCount(Country* country, u16 team)
+{
+    u16 amount = 0;
+    Troop* it = country->troops;
+    while (it != NULL)
+    {
+        if (it->team == team) ++amount;
+        it = it->next;
+    }
+    return amount;
+}
+
 void Country_ClearDescription(void)
 {
     consoleDrawText(0, 4, "                                ");
