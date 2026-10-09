@@ -45,6 +45,21 @@ s16 Wrap(s16 x, s16 min, s16 max)
     return x;
 }
 
+static void GoToNextAvailableCountry()
+{
+    u16 i;
+    for (i = 0; i < COUNTRY_COUNT; i++)
+    {
+        Country* country = &countries[i];
+        if (country->team == MY_TEAM && country->population > 0)
+        {
+            menuIndex = MENU_UNASSIGNED;
+            Game_UpdateCurrentCountry(i);
+            break;
+        }
+    }
+}
+
 static void Init(void)
 {
     menu.index = 0;
@@ -56,7 +71,14 @@ static void Init(void)
         country->population = country->maxPopulation;
     }
 
-    Game_UpdateCurrentCountry(Game_GetCountryIndex());
+    if (Game_GetCurrentCountry()->team != MY_TEAM)
+    {
+        GoToNextAvailableCountry();
+    }
+    else
+    {
+        Game_UpdateCurrentCountry(Game_GetCountryIndex());
+    }
 }
 
 static void Cleanup(void)
@@ -126,17 +148,7 @@ static void Update(bool isTurnStarted)
 
     case KEY_SELECT:
         {
-            u16 i;
-            for (i = 0; i < COUNTRY_COUNT; i++)
-            {
-                Country* country = &countries[i];
-                if (country->team == MY_TEAM && country->population > 0)
-                {
-                    menuIndex = MENU_UNASSIGNED;
-                    Game_UpdateCurrentCountry(i);
-                    break;
-                }
-            }
+            GoToNextAvailableCountry();
         }
         break;
 
