@@ -8,6 +8,7 @@
 #include "report.h"
 #include "gameover.h"
 #include "intro.h"
+#include "victory.h"
 
 #define SCROLL_SPEED 5
 
