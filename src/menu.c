@@ -6,7 +6,7 @@ s16 Wrap(s16 x, s16 min, s16 max);
 void Menu_Draw(Menu* menu)
 {
     u16 numItems = menu->getNumItems();
-    if (numItems > MENU_MAX_CHOICE_COUNT) numItems = MENU_MAX_CHOICE_COUNT - 1;
+    if (numItems > MENU_MAX_CHOICE_COUNT) numItems = MENU_MAX_CHOICE_COUNT;
 
     u16 i;
     consoleDrawText(0, 4, "%s                    ", menu->getTitle());

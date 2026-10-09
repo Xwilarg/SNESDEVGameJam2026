@@ -3,7 +3,7 @@
 
 #include <snes.h>
 
-#define MENU_MAX_CHOICE_COUNT 6
+#define MENU_MAX_CHOICE_COUNT 9
 
 typedef struct
 {
