@@ -51,10 +51,8 @@ static u16 GetPlayerTroopCount(Country* country)
     return count;
 }
 
-static s16 GetWinningTeam()
+static s16 GetWinningTeam(Country* country)
 {
-    Country* country = Game_GetCurrentCountry();
-
     if (country->troops == NULL) return country->team;
 
     Troop* it = country->troops;
@@ -222,10 +220,9 @@ static bool LookForTargetAndFight(Country* country, Troop* me, bool printToScree
     return true;
 }
 
-static void PlayBattleRoundAuto()
+static void PlayBattleRoundAuto(Country* country)
 {
     s16 winningTeam;
-    Country* country = Game_GetCurrentCountry();
     
     do
     {
@@ -262,7 +259,7 @@ static void PlayBattleRoundAuto()
             }
         }
 
-        winningTeam = GetWinningTeam();
+        winningTeam = GetWinningTeam(country);
         
     } while (winningTeam == -1);    
 
@@ -329,7 +326,7 @@ static bool CheckToNextCountry()
 
             if (playerTroopCount == 0 && country->team != MY_TEAM) // No player, auto combat
             {
-                PlayBattleRoundAuto();
+                PlayBattleRoundAuto(country);
             }
             else
             {
@@ -456,7 +453,7 @@ static void Update(bool isTurnStarted)
     case KEY_B:
         if (subPhase == REPORT_PHASE_INTRO)
         {
-            s16 winningTeam = GetWinningTeam();
+            s16 winningTeam = GetWinningTeam(Game_GetCurrentCountry());
             if (winningTeam == -1)
             {
                 currBattleRound = 1;
@@ -471,7 +468,7 @@ static void Update(bool isTurnStarted)
         }
         else if (subPhase == REPORT_PHASE_VICTORY)
         {
-            s16 winningTeam = GetWinningTeam();
+            s16 winningTeam = GetWinningTeam(Game_GetCurrentCountry());
             if (checkIndex == 0 && winningTeam != MY_TEAM)
             {
                 Game_SwitchToGameOver(); // Lost player capital, game over
@@ -492,7 +489,7 @@ static void Update(bool isTurnStarted)
             {
                 troopIndex = 0;
                 ++currBattleRound;
-                s16 winningTeam = GetWinningTeam();
+                s16 winningTeam = GetWinningTeam(Game_GetCurrentCountry());
                 if (winningTeam == -1)
                 {
                     ShowBattleRound();
