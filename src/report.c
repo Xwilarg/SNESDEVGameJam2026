@@ -226,7 +226,7 @@ static void PlayBattleRoundAuto(Country* country)
     
     do
     {
-        u16 troopIndex = 0;
+        troopIndex = 0;
         
         while (true)
         {
@@ -259,6 +259,7 @@ static void PlayBattleRoundAuto(Country* country)
             }
         }
 
+        ++currBattleRound;
         winningTeam = GetWinningTeam(country);
         
     } while (winningTeam == -1);    
@@ -326,6 +327,7 @@ static bool CheckToNextCountry()
 
             if (playerTroopCount == 0 && country->team != MY_TEAM) // No player, auto combat
             {
+                currBattleRound = 1;
                 PlayBattleRoundAuto(country);
             }
             else
