@@ -430,6 +430,8 @@ static void ShowVictoryScreen(u16 winningTeam)
     Country* country = Game_GetCurrentCountry();
     country->team = winningTeam;
 
+    u16 troopCount = Country_GetArmyCount(country, winningTeam);
+
     subPhase = REPORT_PHASE_VICTORY;
     ClearScreen();
 
@@ -441,6 +443,7 @@ static void ShowVictoryScreen(u16 winningTeam)
     {
         consoleDrawText(0, 6, "Another team captured the city");
     }
+    consoleDrawText(0, 8, "Troops left: %d", troopCount);
 }
 
 static void Update(bool isTurnStarted)

@@ -246,9 +246,9 @@ void Country_WriteDescription(int countryIndex)
         consoleDrawText(0, 8, "high quality swords.");
         consoleDrawText(0, 9, "They train elite units");
         consoleDrawText(0, 10, "named guardians that are");
-        consoleDrawText(0, 11, "said to use the sword");
-        consoleDrawText(0, 12, "expertly and have no");
-        consoleDrawText(0, 13, "weakness");
+        consoleDrawText(0, 11, "said to use the blade");
+        consoleDrawText(0, 12, "expertly with little");
+        consoleDrawText(0, 13, "weaknesses");
     }
     else if (countryIndex == 3) // Eno
     {
