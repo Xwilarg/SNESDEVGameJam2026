@@ -1,3 +1,5 @@
+#include <string.h> // strcpy
+
 #include "country.h"
 
 Country countries[COUNTRY_COUNT] = {
@@ -227,8 +229,18 @@ void Country_ClearDescription(void)
     consoleDrawText(0, 13, "                                ");
 }
 
-void Country_WriteDescription(int countryIndex)
+void Country_WriteDescription(Country* country)
 {
+    consoleDrawText(0, 4, "%s here train the following units:", (&countries[country->team])->name);
+    u16* it = country->units;
+    u16 y = 7;
+    while (*it != -1)
+    {
+        consoleDrawText(0, y, "   %s", TroopTypeToString(*it));
+        ++it;
+        ++y;
+    }
+    /*
     if (countryIndex == 1) // Taureki
     {
         consoleDrawText(0, 4, "After the great war, Taureki");
@@ -261,7 +273,7 @@ void Country_WriteDescription(int countryIndex)
     }
     else if (countryIndex == 4) // Bretna
     {
-        // Expertise of the bow but mostly defense
+        consoleDrawText(0, 4, "Bretna ");
     }
     else if (countryIndex == 5) // Strena
     {
@@ -280,7 +292,7 @@ void Country_WriteDescription(int countryIndex)
     {
         consoleDrawText(0, 4, "No information is known about");
         consoleDrawText(0, 5, "this country so far...");
-    }
+    }*/
 }
 
 bool Country_HaveConflictPending(Country* country)

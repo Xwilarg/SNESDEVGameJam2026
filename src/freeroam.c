@@ -117,7 +117,7 @@ static void ReachCountry(void)
     if (country->team != MY_TEAM)
     {
         Menu_Clear();
-        Country_WriteDescription(country->team);
+        Country_WriteDescription(country);
     }
     else
     {
