@@ -68,7 +68,7 @@ void AI_ResolveTurn(Country* country)
 
                 // Move troop
                 Troop* tmp = tr->next;
-                MoveTroop(&countries[(u16)country->nearbyCountries[chosen]], tr);
+                //MoveTroop(&countries[(u16)country->nearbyCountries[chosen]], tr);
                 tr->wasMoved = true;
 
                 tr = tmp;
