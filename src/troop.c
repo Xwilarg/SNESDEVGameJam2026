@@ -1,9 +1,6 @@
 #include "troop.h"
 
 #include <stdio.h> // snprintf
-#include <stdlib.h>
-
-#define MAX_UPGRADE_LEVEL 3
 
 static char buffer[30];
 

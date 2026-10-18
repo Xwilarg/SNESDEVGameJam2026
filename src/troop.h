@@ -6,6 +6,8 @@
 #define MY_TEAM 0
 #define MAX_TROOP_COUNTRY 8
 
+#define MAX_UPGRADE_LEVEL 3
+
 typedef enum
 {
     BOWMAN,
