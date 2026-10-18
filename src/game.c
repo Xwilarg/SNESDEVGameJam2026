@@ -9,6 +9,7 @@
 #include "gameover.h"
 #include "intro.h"
 #include "victory.h"
+#include "sound.h"
 
 #define SCROLL_SPEED 5
 
@@ -59,6 +60,8 @@ void LerpTowards(u16 targetX, u16 targetY)
     while (targetX != worldX || targetY != worldY)
     {
         World_SetCamera(Lerp(worldX, targetX), Lerp(worldY, targetY));
+
+        spcProcess();
         WaitForVBlank();
     }
 }
@@ -115,6 +118,7 @@ void Game_SwitchToIntro(void)
 
 void Game_Init()
 {
+    Sound_Play(MOD_BGM);
     Game_SwitchToIntro();
 }
 
@@ -122,6 +126,7 @@ void Game_Update(void)
 {
     currPhase->update(isTurnStarted);
 
+    spcProcess();
     WaitForVBlank();
 }
 

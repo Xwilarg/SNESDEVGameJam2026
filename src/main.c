@@ -3,9 +3,12 @@
 #include "game.h"
 #include "world.h"
 #include "country.h"
+#include "sound.h"
 
 int main(void)
 {
+    Sound_Init();
+
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
     consoleInitDefaultText(0);

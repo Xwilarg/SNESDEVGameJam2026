@@ -1,6 +1,7 @@
 .vscode/
 /assets/*
 !/assets/*.bmp
+!/assets/*.it
 
 # Prerequisites
 *.d
