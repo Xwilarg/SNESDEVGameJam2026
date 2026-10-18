@@ -11,7 +11,7 @@ static Country* GetRandomTarget(Country* source)
         length++;
     }
 
-    return &countries[source->nearbyCountries[rand() % length]]; // Bug is here
+    return &countries[source->nearbyCountries[rand() % length]];
 }
 
 static void MoveTroop(Country* country, Troop* t)
@@ -52,7 +52,7 @@ void AI_ResolveTurn(Country* country)
     {
         if (tr->wasMoved == false && tr->team != MY_TEAM)
         {
-            if (false)//rand() % 2 == 0) // Move troop
+            if (rand() % 2 == 0) // Move troop
             {
                 u16* it = country->nearbyCountries;
 
@@ -64,7 +64,7 @@ void AI_ResolveTurn(Country* country)
                     i++;
                 }
 
-                u16 chosen = rand() % (i + 1);
+                u16 chosen = rand() % i;
                 Troop* tmp = tr->next;
                 MoveTroop(countries->nearbyCountries + chosen, tr);
                 tr->wasMoved = true;
@@ -103,8 +103,8 @@ void AI_ResolveTurn(Country* country)
         else if (country->team != country->originalTeam)
         {
             // Not our country, let's just build random things
-            u16 buildIndex = rand() % (GetUnitCount(country) + 1);
-            Troop* t = Country_NewTroop(country, country->troops + buildIndex, country->team);
+            u16 buildIndex = rand() % GetUnitCount(country);
+            Troop* t = Country_NewTroop(country, country->units[buildIndex], country->team);
             if (rand() % 2 == 1) MoveTroop(country, t);
         }
         else
