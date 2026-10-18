@@ -1,6 +1,7 @@
 #include "troop.h"
 
 #include <stdio.h> // snprintf
+#include <stdlib.h> // malloc
 
 static char buffer[30];
 
