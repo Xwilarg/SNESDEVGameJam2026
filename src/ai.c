@@ -4,7 +4,7 @@
 static Country* GetRandomTarget(Country* source)
 {
     u16 length = 0;
-    u16* ptr = source->nearbyCountries;
+    s16* ptr = source->nearbyCountries;
     while (*ptr != -1)
     {
         ptr++;
@@ -39,7 +39,7 @@ static u16 GetTroopCount(Country* country, u16 team)
 
 u16 GetUnitCount(Country* country)
 {
-    u16 i;
+    s16 i;
     for (i = 0; country->units[i] != -1; i++)
     { }
     return i;
@@ -54,7 +54,7 @@ void AI_ResolveTurn(Country* country)
         {
             if (rand() % 2 == 0) // Move troop (1/2 chance)
             {
-                u16* it = country->nearbyCountries;
+                s16* it = country->nearbyCountries;
 
                 // Amount of adjacent countries
                 u16 i = 0;
@@ -68,7 +68,7 @@ void AI_ResolveTurn(Country* country)
 
                 // Move troop
                 Troop* tmp = tr->next;
-                MoveTroop(countries->nearbyCountries + chosen, tr);
+                MoveTroop(&countries[(u16)country->nearbyCountries[chosen]], tr);
                 tr->wasMoved = true;
 
                 tr = tmp;

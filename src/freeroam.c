@@ -174,7 +174,7 @@ u16 GetMenuItemCount()
         if (menuIndex == MENU_UNASSIGNED) return 4;
         if (menuIndex == MENU_CREATE_TROOP)
         {
-            u16 i;
+            s16 i;
             for (i = 0; country->units[i] != -1; i++)
             { }
             return i + 1;
@@ -200,7 +200,7 @@ u16 GetMenuItemCount()
             if (moveDestination == -1)
             {
                 // Choose where to send the troop
-                u16* it = country->nearbyCountries;
+                s16* it = country->nearbyCountries;
 
                 // Amount of adjacent countries + back
                 u16 i = 0;
@@ -299,7 +299,7 @@ char* OnMenuLabel(u16 index)
         }
         else if (menuIndex == MENU_CREATE_TROOP)
         {
-            u16 i;
+            s16 i;
             for (i = 0; country->units[i] != -1; i++)
             {
                 if (i == index) return TroopTypeToString(country->units[i]);
@@ -329,7 +329,7 @@ char* OnMenuLabel(u16 index)
         {
             if (moveDestination == -1)
             {
-                u16* it = country->nearbyCountries;
+                s16* it = country->nearbyCountries;
 
                 int i = 0;
                 while (*it != -1)
@@ -408,7 +408,7 @@ bool OnMenuSelect(u16 index)
     }
     else if (menuIndex == MENU_CREATE_TROOP)
     {
-        u16 i;
+        s16 i;
         for (i = 0; country->units[i] != -1; i++)
         {
             if (i == index)
@@ -453,7 +453,7 @@ bool OnMenuSelect(u16 index)
     {
         if (moveDestination == -1)
         {
-            u16* it = country->nearbyCountries;
+            s16* it = country->nearbyCountries;
 
             int i = 0;
             while (*it != -1)

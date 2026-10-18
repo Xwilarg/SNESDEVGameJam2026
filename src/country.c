@@ -232,7 +232,7 @@ void Country_ClearDescription(void)
 void Country_WriteDescription(Country* country)
 {
     consoleDrawText(0, 4, "%s here train the following units:", (&countries[country->team])->name);
-    u16* it = country->units;
+    s16* it = country->units;
     u16 y = 7;
     while (*it != -1)
     {
