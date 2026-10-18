@@ -11,7 +11,7 @@ static Country* GetRandomTarget(Country* source)
         length++;
     }
 
-    return &countries[source->nearbyCountries[rand() % length]];
+    return &countries[source->nearbyCountries[rand() % length]]; // Bug is here
 }
 
 static void MoveTroop(Country* country, Troop* t)
@@ -47,7 +47,6 @@ u16 GetUnitCount(Country* country)
 
 void AI_ResolveTurn(Country* country)
 {
-    // TODO: move existing troops
     Troop* t = country->troops;
     while (t != NULL)
     {
@@ -91,6 +90,7 @@ void AI_ResolveTurn(Country* country)
     u16 spawnCount = 0;
     while (country->population > 0)
     {
+            // Try upgrading
         if (Country_GetArmyCount(country, country->team) >= MAX_TROOP_COUNTRY)
         {
             Troop* t = country->troops;
@@ -104,7 +104,6 @@ void AI_ResolveTurn(Country* country)
 
                 t = t->next;
             }
-            // Try upgrading
         }
         else if (country->team != country->originalTeam)
         {
