@@ -12,6 +12,10 @@ static Country* GetRandomTarget(Country* source)
     }
 
     return &countries[source->nearbyCountries[rand() % length]]; // Bug is here
+    /*
+        return &countries[0]; works
+        return &countries[source->nearbyCountries[0]]; don't
+    */
 }
 
 static void MoveTroop(Country* country, Troop* t)
