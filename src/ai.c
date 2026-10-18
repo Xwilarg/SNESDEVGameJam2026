@@ -50,13 +50,13 @@ void AI_ResolveTurn(Country* country)
     Troop* tr = country->troops;
     while (tr != NULL)
     {
-        if (tr->wasMoved == false && tr->team != MY_TEAM)
+        if (tr->wasMoved == false && tr->team != MY_TEAM) // Enemy troop
         {
-            if (rand() % 2 == 0) // Move troop
+            if (rand() % 2 == 0) // Move troop (1/2 chance)
             {
                 u16* it = country->nearbyCountries;
 
-                // Amount of adjacent countries + back
+                // Amount of adjacent countries
                 u16 i = 0;
                 while (*it != -1)
                 {
@@ -64,10 +64,13 @@ void AI_ResolveTurn(Country* country)
                     i++;
                 }
 
-                u16 chosen = rand() % i;
+                u16 chosen = rand() % i; // Pick a random target
+
+                // Move troop
                 Troop* tmp = tr->next;
                 MoveTroop(countries->nearbyCountries + chosen, tr);
                 tr->wasMoved = true;
+
                 tr = tmp;
             }
             else
