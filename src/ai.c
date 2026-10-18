@@ -21,6 +21,13 @@ static void MoveTroop(Country* country, Troop* t)
     t->wasMoved = true;
 }
 
+static void MoveTroopWithLast(Country* country, Troop* last, Troop* t)
+{
+    Country_RemoveExisting(country, last, t);
+    Country_AddExisting(GetRandomTarget(country), t);
+    t->wasMoved = true;
+}
+
 static u16 GetTroopCount(Country* country, u16 team)
 {
     u16 count = 0;
@@ -48,39 +55,28 @@ u16 GetUnitCount(Country* country)
 void AI_ResolveTurn(Country* country)
 {
     Troop* tr = country->troops;
+    Troop* last = NULL;
     while (tr != NULL)
     {
         if (tr->wasMoved == false && tr->team != MY_TEAM) // Enemy troop
         {
             if (rand() % 2 == 0) // Move troop (1/2 chance)
             {
-                s16* it = country->nearbyCountries;
-
-                // Amount of adjacent countries
-                u16 i = 0;
-                while (*it != -1)
-                {
-                    it++;
-                    i++;
-                }
-
-                u16 chosen = rand() % i; // Pick a random target
-
                 // Move troop
                 Troop* tmp = tr->next;
-                //MoveTroop(&countries[(u16)country->nearbyCountries[chosen]], tr);
-                tr->wasMoved = true;
+                MoveTroopWithLast(country, last, tr);
 
                 tr = tmp;
             }
             else
             {
-                tr->wasMoved = true;
+                last = tr;
                 tr = tr->next;
             }
         }
         else
         {
+            last = tr;
             tr = tr->next;
         }
     }
