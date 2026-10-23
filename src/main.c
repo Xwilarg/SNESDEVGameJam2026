@@ -5,13 +5,16 @@
 #include "country.h"
 #include "sound.h"
 
+// Literally the default font, but the included one is broken
+extern char pvsl_font_til, pvsl_font_pal;
+
 int main(void)
 {
     Sound_Init();
 
     // Initialize text console with our font
     // Default Map is 0x6800, Gfx is 0x3000 and offset is 0
-    consoleInitDefaultText(0);
+    consoleInitText(0, 16 * 2, &pvsl_font_til, &pvsl_font_pal);
 
     World_Init();
 

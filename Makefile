@@ -21,7 +21,10 @@ re: clean all
 
 clean: cleanBuildRes cleanRom cleanGfx cleanLogs
 
-bitmaps : assets/map_512_512.pic
+assets/pvsl_font.pic: assets/pvsl_font.bmp
+	$(GFXCONV) -s 8 -o 2 -u 16 -e 1 -p -t bmp -m -R -i $<
+
+bitmaps : assets/map_512_512.pic assets/pvsl_font.pic
 
 SMCONVFLAGS	:= -s -o $(SOUNDBANK) -V -b 5
 musics : $(SOUNDBANK).obj
