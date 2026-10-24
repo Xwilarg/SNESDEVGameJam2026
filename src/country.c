@@ -12,8 +12,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        3, // Population
-        3,
+        4, // Population
+        4,
 
         MY_TEAM,
         MY_TEAM, // Team
@@ -30,8 +30,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        4, // Population
-        4,
+        3, // Population
+        3,
 
         1,
         1, // Team
@@ -66,8 +66,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        4, // Population
-        4,
+        3, // Population
+        3,
 
         3,
         3, // Team
@@ -84,8 +84,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        2, // Population
-        2,
+        3, // Population
+        3,
 
         4,
         4, // Team
@@ -102,8 +102,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        2, // Population
-        2,
+        3, // Population
+        3,
 
         5,
         5, // Team
@@ -156,8 +156,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        7, // Population
-        7,
+        4, // Population
+        4,
 
         8,
         8, // Team
@@ -174,8 +174,8 @@ Country countries[COUNTRY_COUNT] = {
 
         NULL, // Troops
 
-        1, // Population
-        1,
+        3, // Population
+        3,
 
         9,
         9, // Team
